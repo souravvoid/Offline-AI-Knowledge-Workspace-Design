@@ -1,0 +1,86 @@
+# ── Python ──────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.Python
+env/
+venv/
+.venv/
+
+# ── Ruff ────────────────────────────────────────────
+.ruff_cache/
+
+# ── Testing ─────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+*.coverage.*
+coverage/
+pytest-results/
+
+# ── IDE / Editor ────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ── OS ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.dSYM/
+
+# ── Environment ─────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.local
+
+# ── Logs ────────────────────────────────────────────
+logs/
+*.log
+
+# ── Node.js (legacy Tauri frontend) ─────────────────
+node_modules/
+dist/
+dist-ssr/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ── Rust (legacy Tauri backend) ─────────────────────
+src-tauri/target/
+
+# ── User data ───────────────────────────────────────
+*.db
+*.db-wal
+*.db-shm
+~/.khoji/
+
+# ── AI Models (downloaded at runtime) ──────────────
+models/
+*.gguf
+*.onnx
+
+# ── Tauri ───────────────────────────────────────────
+*.local
+
+# ── Ruff ────────────────────────────────────────────
+.ruff_cache/
+
+# ── Screenshots / artifacts ─────────────────────────
+artifacts/
+screenshots/
