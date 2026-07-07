@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khoji — Offline AI Knowledge Workspace Documentation</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Inline script to prevent Flash of Unstyled Content (FOUC)
+    {
+      const colorScheme = localStorage.getItem('color-scheme');
+      if (colorScheme) {
+        document.documentElement.setAttribute('data-theme', colorScheme);
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- ── Top Navigation Bar ─────────────────────────────────────────────── -->
+  <header class="top-nav">
+    <div class="brand-section">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+      <div class="logo-icon">K</div>
+      <h1 class="brand-name">Khoji</h1>
+      <span class="brand-tagline">Offline AI Knowledge Workspace</span>
+    </div>
+    <div class="nav-actions">
+      <div class="search-wrapper">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search documentation...">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle theme">
+        <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- ── Sidebar Navigation ────────────────────────────────────────────── -->
+    <aside class="sidebar">
+      <nav class="nav-menu">
+        <div class="nav-section-title">Getting Started</div>
+        <a class="nav-link active" data-section="docs-intro">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          Introduction & Setup
+        </a>
+        <a class="nav-link" data-section="docs-prd">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-list"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14h6"/><path d="M9 18h6"/><path d="M9 10h6"/></svg>
+          Product Specs (PRD)
+        </a>
+
+        <div class="nav-section-title">System Architecture</div>
+        <a class="nav-link" data-section="docs-pipeline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cpu"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg>
+          Multi-Agent Pipeline
+        </a>
+        <a class="nav-link" data-section="docs-database">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+          Database Design
+        </a>
+        <a class="nav-link" data-section="docs-memory">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v14"/></svg>
+          AI Memory System
+        </a>
+
+        <div class="nav-section-title">Standards & Shortcuts</div>
+        <a class="nav-link" data-section="docs-shortcuts">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-keyboard"><rect width="20" height="12" x="2" y="6" rx="2" ry="2"/><path d="M6 10h.01"/><path d="M10 10h.01"/><path d="M14 10h.01"/><path d="M18 10h.01"/><path d="M6 14h.01"/><path d="M18 14h.01"/><path d="M10 14h4"/></svg>
+          Keyboard Shortcuts
+        </a>
+        <a class="nav-link" data-section="docs-access">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-accessibility"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4 21 9 11"/><path d="M10 2v3"/><path d="m13 14-2.5 7"/></svg>
+          Accessibility & Perf
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ── Main Content Container ───────────────────────────────────────── -->
+    <main class="main-content">
+
+      <!-- ── Section 1: Introduction & Setup ────────────────────────────── -->
+      <section class="doc-section active" id="docs-intro">
+        <div class="searchable-content">
+          <h1>Introduction & Setup</h1>
+          <p class="brand-tagline" style="display: inline-block; margin-bottom: var(--space-4);">Seeking Localized Intelligence</p>
+          <p>
+            <strong>Khoji</strong> is a local-first, offline AI knowledge operating system that transforms multi-format documents (PDFs, images, and epubs) into a permanent, interconnected knowledge graph. Built with PySide6 for high-performance desktop execution, Khoji guarantees that all document reading, layout parsing, concept extraction, vector embedding, and LLM reasoning remain completely on your local device.
+          </p>
+
+          <h2>Quick Start Setup</h2>
+          <p>Follow these CLI commands to initialize a virtual environment, install local dependencies, and spin up the Khoji Desktop application.</p>
+          
+          <pre class="terminal-block">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+              </div>
+              <span class="terminal-title">Terminal - Setup</span>
+              <button class="btn-copy" id="copyBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                Copy
+              </button>
+            </div>
+            <code class="terminal-code"># Navigate to workspace
+cd khoji_desktop
+
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies (with OCR fallbacks and dev tools)
+pip install -e ".[ocr,dev]"
+
+# Run Khoji Desktop
+python -m khoji.main</code>
+          </pre>
+
+          <h2>Project Codebase Directory Tree</h2>
+          <p>The Python source codebase follows a modular design separating the core pipelines, database drivers, local AI engines, and PySide6 views.</p>
+          
+          <pre><code>src/khoji/
+├── main.py                    # App entry point & panel wireframes
+├── database/
+│   └── db.py                  # SQLite CRUD interfaces (WAL enabled)
+├── pipeline/
+│   ├── pdf_extractor.py       # PyMuPDF text & page parsing
+│   ├── ocr.py                 # RapidOCR / Tesseract Fallback check
+│   ├── markdown_generator.py  # Page segmentation & chunking
+│   ├── content_generator.py   # Spaced repetition card & MCQ logic
+│   ├── processor.py           # Orchestration QThread worker
+│   └── exporter.py            # Anki APKG, Markdown, and CSV compiler
+├── ai/
+│   ├── llm.py                 # local llama.cpp handler (Qwen2.5/SmolLM2/TinyLlama)
+│   ├── embeddings.py          # sentence-transformers MiniLM-L6 (384-dim)
+│   └── vector_search.py       # Local FAISS vector search driver
+└── ui/
+    ├── main_window.py         # App frame shell with collapsible sidebar
+    ├── theme.py               # Theme manager and styling QSS Custom rules
+    └── panels/
+        ├── library_panel.py   # Grid card listing & Drag-and-Drop zone
+        ├── notes_panel.py     # Markdown text editor + live preview rendering
+        ├── flashcards_panel.py# Flashcard flipping review view
+        ├── quiz_panel.py      # Multiple-choice exam interface
+        ├── chat_panel.py      # Context-aware chat with streaming tokens
+        └── search_panel.py    # Global semantic vector search workspace</code></pre>
+        </div>
+      </section>
+
+      <!-- ── Section 2: PRD specifications ──────────────────────────────── -->
+      <section class="doc-section" id="docs-prd">
+        <div class="searchable-content">
+          <h1>Product Requirements Specifications (PRD)</h1>
+          <p>
+            Khoji is built to solve fragmented information mastery. By running completely on-device, it provides researchers, engineers, and students a private second brain that reads materials, extracts concepts, schedules active recall drills, and responds contextually.
+          </p>
+
+          <h2>Audience Segmentation</h2>
+          <p>Target segments, their market size, and primary pain points addressed by Khoji's local-first offline workflow.</p>
+          
+          <div class="audience-grid">
+            <div class="audience-card">
+              <h4>Engineering Students</h4>
+              <p>Needs textbook definitions, formula associations, and rapid exam preparation drill tools.</p>
+              <div class="audience-meta">
+                <span class="badge badge-primary">Very Large</span>
+                <span class="badge badge-secondary">WTP: Low-Med</span>
+              </div>
+            </div>
+            <div class="audience-card">
+              <h4>Medical Students</h4>
+              <p>Struggles with dense anatomy, diagram parsing, and extensive rote memorization schedules.</p>
+              <div class="audience-meta">
+                <span class="badge badge-primary">Large</span>
+                <span class="badge badge-secondary">WTP: Medium</span>
+              </div>
+            </div>
+            <div class="audience-card">
+              <h4>Researchers</h4>
+              <p>Demands robust research paper indexing, citation tracking, privacy, and LaTeX integration.</p>
+              <div class="audience-meta">
+                <span class="badge badge-primary">Medium</span>
+                <span class="badge badge-success">WTP: High</span>
+              </div>
+            </div>
+            <div class="audience-card">
+              <h4>Software Engineers</h4>
+              <p>Requires technical design reading, API catalog search, code-snippet recall, and offline access.</p>
+              <div class="audience-meta">
+                <span class="badge badge-primary">Large</span>
+                <span class="badge badge-secondary">WTP: Medium</span>
+              </div>
+            </div>
+          </div>
+
+          <h2>Feature Priorities</h2>
+          <div class="feature-list-container">
+            <div class="feature-group">
+              <h3>P0 — Core Essentials (MVP Release)</h3>
+              <div class="feature-item-grid">
+                <div class="feature-item-card">
+                  <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-up"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 12v6"/><path d="m15 15-3-3-3 3"/></svg>
+                    Multi-Format Ingestion
+                  </h4>
+                  <p>Drag-and-drop parsing of PDF files up to 200MB. PyMuPDF parsing and RapidOCR scanning fallback.</p>
+                </div>
+                <div class="feature-item-card">
+                  <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.936l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v4"/><path d="M6 19H2"/></svg>
+                    Multi-Agent pipeline
+                  </h4>
+                  <p>Orchestrates isolated models to run OCR, layout structure analysis, concept indexing, summaries, and quizzes.</p>
+                </div>
+                <div class="feature-item-card">
+                  <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers"><path d="m12 3-10 5L12 13l10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+                    Spaced Repetition
+                  </h4>
+                  <p>Automatic cloze and Q&A flashcard generation reviewed through an FSRS or SM-2 algorithm schedule.</p>
+                </div>
+                <div class="feature-item-card">
+                  <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    Semantic Search
+                  </h4>
+                  <p>Global vector search powered by local sentence-transformers (MiniLM) and FAISS indexes.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="feature-group">
+              <h3>P1 — Secondary Expansion</h3>
+              <div class="feature-item-grid">
+                <div class="feature-item-card">
+                  <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open"><path d="m6 14 1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2"/></svg>
+                    Collections
+                  </h4>
+                  <p>Folder systems and smart query rules grouping files automatically based on tags (e.g. #quantum).</p>
+                </div>
+                <div class="feature-item-card">
+                  <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-network"><rect width="6" height="6" x="16" y="16" rx="1"/><rect width="6" height="6" x="2" y="16" rx="1"/><rect width="6" height="6" x="9" y="2" rx="1"/><path d="M12 8v8"/><path d="M12 12H5v4"/><path d="M12 12h7v4"/></svg>
+                    Mind Maps & Timelines
+                  </h4>
+                  <p>Automatically maps chronological milestones and structural links into zoomable Mermaid.js canvases.</p>
+                </div>
+                <div class="feature-item-card">
+                  <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-cog"><circle cx="18" cy="15" r="3"/><circle cx="9" cy="7" r="4"/><path d="M10 15H6a4 4 0 0 0-4 4v2"/><path d="m21.7 16.4-.9-.3"/><path d="m15.2 13.9-.9-.3"/><path d="m16.6 18.7.3-.9"/><path d="m19.4 11.3.3-.9"/><path d="m14 17.6.9-.3"/><path d="m22 12.4-.9-.3"/><path d="m20.3 19.7-.3-.9"/><path d="m17.7 10.3-.3-.9"/></svg>
+                    AI Memory Customization
+                  </h4>
+                  <p>Saves preferences (explanations detail, analogies choice) and corrections to shape future LLM reasoning.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="feature-group">
+              <h3>P2 — Future Roadmap</h3>
+              <p>Plugin architecture supporting custom parsers and export adapters; peer-to-peer LAN knowledge synchronization; local Git integrations tracking changes to markdown notes; adaptive tutoring schedules.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Section 3: Multi-Agent AI Pipeline ─────────────────────────── -->
+      <section class="doc-section" id="docs-pipeline">
+        <div class="searchable-content">
+          <h1>Multi-Agent AI Pipeline</h1>
+          <p>
+            Rather than overloading a single model with raw PDF content, Khoji orchestrates a network of 12 specialized agents. Each agent processes, translates, indexes, or formats document sections contextually.
+          </p>
+
+          <h2>Interactive Pipeline Flow</h2>
+          <p>Click on any processing phase below to inspect the agents and hardware-routing targets executing during that stage.</p>
+
+          <div class="pipeline-visualizer">
+            <div class="pipeline-flow">
+              <div class="pipeline-step active" data-phase="input">
+                <div class="step-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                </div>
+                <span class="step-label">1. Ingestion</span>
+              </div>
+              <div class="pipeline-step" data-phase="extraction">
+                <div class="step-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+                </div>
+                <span class="step-label">2. Parsing / OCR</span>
+              </div>
+              <div class="pipeline-step" data-phase="indexing">
+                <div class="step-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                </div>
+                <span class="step-label">3. Vector index</span>
+              </div>
+              <div class="pipeline-step" data-phase="synthesis">
+                <div class="step-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M3 12h18"/></svg>
+                </div>
+                <span class="step-label">4. Synthesis</span>
+              </div>
+              <div class="pipeline-step" data-phase="export">
+                <div class="step-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                </div>
+                <span class="step-label">5. Export</span>
+              </div>
+            </div>
+
+            <!-- Interactive details updated by JS -->
+            <div class="agent-dashboard" id="agentDashboard">
+              <div id="activeAgentTitle"></div>
+              <div id="agentDetailsBody"></div>
+            </div>
+          </div>
+
+          <h2>Model Allocation & Hardware Scaling Strategy</h2>
+          <p>
+            To support machines ranging from 4GB RAM to multi-GPU workstations, the pipeline orchestrator automatically detects hardware presets and maps tasks to smaller, optimized local models.
+          </p>
+          
+          <div class="strategy-table-wrapper">
+            <table class="strategy-table">
+              <thead>
+                <tr>
+                  <th>Pipeline Task</th>
+                  <th>Low RAM Setup (4GB RAM)</th>
+                  <th>Medium Setup (8GB RAM)</th>
+                  <th>High RAM Setup (16GB+ RAM)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>OCR</strong></td>
+                  <td>Tesseract v5 (Native C++)</td>
+                  <td>EasyOCR (PyTorch CPU)</td>
+                  <td>Surya OCR (GPU accelerated)</td>
+                </tr>
+                <tr>
+                  <td><strong>Layout Segmentation</strong></td>
+                  <td>Rule-based coordinates geometry</td>
+                  <td>LayoutLMv3 (Lightweight model)</td>
+                  <td>LayoutLMv3 (Full segmentation)</td>
+                </tr>
+                <tr>
+                  <td><strong>Vision Descriptions</strong></td>
+                  <td>Skipped (Degrades gracefully)</td>
+                  <td>Florence-2 Base (ONNX)</td>
+                  <td>Florence-2 Large (FP16 GPU)</td>
+                </tr>
+                <tr>
+                  <td><strong>Embeddings Generation</strong></td>
+                  <td>all-MiniLM-L6-v2 (384-dim)</td>
+                  <td>all-MiniLM-L6-v2 (384-dim)</td>
+                  <td>BGE-Large (1024-dim)</td>
+                </tr>
+                <tr>
+                  <td><strong>Reasoning & Generation</strong></td>
+                  <td>Llama-3.2-1B (Q4_K_M GGUF)</td>
+                  <td>Phi-3-Mini (3.8B Q4 GGUF)</td>
+                  <td>Mistral-7B-Instruct (Q8 GGUF)</td>
+                </tr>
+                <tr>
+                  <td><strong>Quiz & Card Prompts</strong></td>
+                  <td>Llama-3.2-1B (Strict Template)</td>
+                  <td>Phi-3-Mini (Structured JSON)</td>
+                  <td>Mistral-7B (Autonomous Reasoning)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 style="margin-top: var(--space-8);">Agent Communication Protocol</h2>
+          <p>Agents exchange instructions and status states through structured JSON contracts inside the background QThread task loop:</p>
+          
+          <pre><code>{
+  "job_id": "uuid-9876-5432-10",
+  "agent": "knowledge-extraction",
+  "input": {
+    "text": "...extracted text chunk contents...",
+    "layout": { "headings": [0, 150], "paragraphs": [151, 800] },
+    "config": { "model": "llama-3.2-1b", "language": "en" }
+  },
+  "output": {
+    "concepts": [
+      { "id": "wave-particle-duality", "name": "Wave-Particle Duality", "type": "principle" }
+    ],
+    "relationships": [
+      { "source": "light", "target": "wave-particle-duality", "type": "exhibits" }
+    ]
+  },
+  "status": "completed",
+  "performance": { "duration_ms": 1820, "tokens_used": 640 }
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- ── Section 4: Database Design ─────────────────────────────────── -->
+      <section class="doc-section" id="docs-database">
+        <div class="searchable-content">
+          <h1>Database Schema & Layout Design</h1>
+          <p>
+            Khoji manages structured relational data in a local <strong>SQLite</strong> database (`~/.khoji/db/khoji.db`) running in Write-Ahead Logging (WAL) mode. High-dimensional vector search mappings are resolved using the <strong>sqlite-vec</strong> SQLite extension compiled locally.
+          </p>
+
+          <h2>Interactive Database Explorer</h2>
+          <p>Select any SQLite table on the left to inspect its SQL schema definition, purposes, and index lists.</p>
+
+          <div class="db-explorer-container">
+            <div class="db-tables-list">
+              <button class="db-table-btn active" data-table="documents">documents</button>
+              <button class="db-table-btn" data-table="document_chunks">document_chunks</button>
+              <button class="db-table-btn" data-table="notes">notes</button>
+              <button class="db-table-btn" data-table="flashcards">flashcards</button>
+              <button class="db-table-btn" data-table="flashcard_reviews">flashcard_reviews</button>
+              <button class="db-table-btn" data-table="quiz_questions">quiz_questions</button>
+              <button class="db-table-btn" data-table="concepts">concepts</button>
+              <button class="db-table-btn" data-table="concept_relationships">concept_relationships</button>
+              <button class="db-table-btn" data-table="ai_memory">ai_memory</button>
+              <button class="db-table-btn" data-table="ai_corrections">ai_corrections</button>
+              <button class="db-table-btn" data-table="chunk_embeddings">chunk_embeddings</button>
+            </div>
+            
+            <div class="db-schema-panel">
+              <div class="db-schema-header">
+                <h3 id="dbSchemaTitle" style="margin-bottom: var(--space-1); color: var(--color-primary-500);">documents</h3>
+                <p id="dbSchemaDescription" style="font-size: 0.9rem; color: var(--text-secondary);"></p>
+              </div>
+              
+              <div style="flex: 1; overflow-y: auto;">
+                <h4>SQLite DDL Schema</h4>
+                <pre class="sql-view"><code id="dbSchemaSql"></code></pre>
+                
+                <h4 style="margin-top: var(--space-4);">Assigned Table Indexes</h4>
+                <ul class="index-list" id="dbIndexesList"></ul>
+              </div>
+            </div>
+          </div>
+
+          <h2>Relational Structure Map</h2>
+          <p>Below is the entity-relationship mapping demonstrating document dependencies and semantic links:</p>
+          <pre><code>documents (1) ───(N) document_chunks (1) ───(1) chunk_embeddings (vectors.db)
+    │
+    ├── (1) ── notes (Markdown format summary)
+    ├── (N) ── flashcards (Spaced Repetition cards) ───(N) flashcard_reviews
+    ├── (N) ── quiz_questions (MCQs)
+    ├── (N) ── diagrams (Mermaid drawings)
+    ├── (N) ── chat_sessions ───(N) chat_messages
+    └── (N) ── concept_documents (Weight) ───(1) concepts (Node) ───(N) concept_relationships</code></pre>
+        </div>
+      </section>
+
+      <!-- ── Section 5: AI Memory System ────────────────────────────────── -->
+      <section class="doc-section" id="docs-memory">
+        <div class="searchable-content">
+          <h1>AI Memory System</h1>
+          <p>
+            Khoji has a persistent memory architecture. Unlike traditional RAG frameworks, it records mastery parameters, formatting preferences, and user corrections directly to local SQLite tables to customize future chat explanations, card generation, and quiz levels.
+          </p>
+
+          <h2>Interactive AI Memory Explorer</h2>
+          <p>Toggle the tabs below to view real JSON representations of stored memory categories.</p>
+
+          <div class="memory-explorer">
+            <div class="tab-container">
+              <button class="tab-btn active" data-tab="concept">Concept Memory</button>
+              <button class="tab-btn" data-tab="preference">Preference Memory</button>
+              <button class="tab-btn" data-tab="progress">Progress Memory</button>
+              <button class="tab-btn" data-tab="interaction">Interaction Memory</button>
+              <button class="tab-btn" data-tab="correction">Correction Memory</button>
+            </div>
+            
+            <div class="json-view-panel">
+              <pre class="json-view"><code id="memoryJsonView"></code></pre>
+              <div class="memory-desc" id="memoryDesc"></div>
+            </div>
+          </div>
+
+          <h2>UI Memory Dashboard Overview</h2>
+          <p>Users can view, manage, and reset their local memory assets from a dedicated configuration panel:</p>
+          
+          <pre style="background: var(--bg-secondary); border-color: var(--border-default);">
+┌────────────────────────────────────────────────────────────┐
+│ 🧠 AI Memory & Progress                         [⚙️ Manage]│
+├────────────────────────────────────────────────────────────┤
+│                                                            │
+│ Learning Progress by Topic                                 │
+│ ─────────────────────────────────────────────────────       │
+│                                                            │
+│ Quantum Mechanics      ████████░░░░░░  75%  ⚡ Review due │
+│ Neural Networks        ██████░░░░░░░░  60%                 │
+│ Organic Chemistry      ████░░░░░░░░░░  40%  🆕 New        │
+│ Algorithms             ██████████░░░░  85%  📊 Strong     │
+│                                                            │
+│ Recent Corrections (2)                                     │
+│ ┌─── Backpropagation date ──────────────────────────────┐  │
+│ │ You corrected: "Invented 2010" → "Published 1986"     │  │
+│ │ AI has applied this correction in 3 subsequent chats. │  │
+│ └───────────────────────────────────────────────────────┘  │
+│                                                            │
+│ AI Knows About You:                                        │
+│ • You prefer detailed explanations with examples           │
+│ • You like cloze-deletion flashcards over Q&A              │
+│ • You struggle with measurement theory in QM               │
+│ • You've corrected the AI 2 times (both applied)          │
+│ • You study most actively between 8-11 PM                  │
+│                                                            │
+│ [Clear Memory] [Export Memory] [Reset Topic Progress]      │
+└────────────────────────────────────────────────────────────┘</pre>
+        </div>
+      </section>
+
+      <!-- ── Section 6: Keyboard Shortcuts ─────────────────────────────── -->
+      <section class="doc-section" id="docs-shortcuts">
+        <div class="searchable-content">
+          <h1>Keyboard Shortcuts Spec</h1>
+          <p>
+            Khoji is built for rapid, mouse-free interactions. The keyboard navigation map below maps shortcuts defined in the design spec to their respective actions in Library, workspace, and flashcard review panels.
+          </p>
+          
+          <div class="kbd-grid">
+            <div class="kbd-category">
+              <h3>Global Navigation</h3>
+              <div class="kbd-row">
+                <span class="kbd-label">Quick search palette</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>K</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Settings dialog</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>,</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Create new note</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>N</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Upload new file</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd></div>
+              </div>
+            </div>
+
+            <div class="kbd-category">
+              <h3>Workspace Views</h3>
+              <div class="kbd-row">
+                <span class="kbd-label">Library panel</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>1</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Notes editor</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>2</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Flashcard list</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>3</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Quiz panel</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>4</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Knowledge graph</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>5</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Toggle Sidebar</span>
+                <div class="kbd-keys"><kbd>Cmd</kbd>+<kbd>B</kbd></div>
+              </div>
+            </div>
+
+            <div class="kbd-category">
+              <h3>Flashcard Study</h3>
+              <div class="kbd-row">
+                <span class="kbd-label">Flip card / show answer</span>
+                <div class="kbd-keys"><kbd>Space</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Rate "Again"</span>
+                <div class="kbd-keys"><kbd>1</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Rate "Hard"</span>
+                <div class="kbd-keys"><kbd>2</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Rate "Good"</span>
+                <div class="kbd-keys"><kbd>3</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Rate "Easy"</span>
+                <div class="kbd-keys"><kbd>4</kbd></div>
+              </div>
+              <div class="kbd-row">
+                <span class="kbd-label">Next card</span>
+                <div class="kbd-keys"><kbd>→</kbd></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Section 7: Accessibility & Performance ─────────────────────── -->
+      <section class="doc-section" id="docs-access">
+        <div class="searchable-content">
+          <h1>Accessibility & Performance Specifications</h1>
+          <p>
+            Khoji Desktop targets WCAG 2.1 AA accessibility guidelines and sets strict local performance bounds to run comfortably on low-end hardware.
+          </p>
+
+          <h2>Accessibility Checklist (WCAG 2.1 AA)</h2>
+          <div class="feature-item-grid" style="margin-top: var(--space-4);">
+            <div class="feature-item-card">
+              <h4 style="color: var(--color-success-500);">Contrast Targets</h4>
+              <p>Maintains WCAG AAA contrast ratios (minimum 4.5:1, targets 7+:1) for all typography elements across light and dark theme configurations.</p>
+            </div>
+            <div class="feature-item-card">
+              <h4 style="color: var(--color-success-500);">Keyboard Traps</h4>
+              <p>Ensures tab cycles are closed within overlays; allows skip-to-content links and exposes 2px visible primary focus rings around active inputs.</p>
+            </div>
+            <div class="feature-item-card">
+              <h4 style="color: var(--color-success-500);">Screen Readers</h4>
+              <p>All PySide6 UI widgets assign standard ARIA label mappings and leverage QAccessible interfaces for screen reader compatibility.</p>
+            </div>
+            <div class="feature-item-card">
+              <h4 style="color: var(--color-success-500);">Motion Reduction</h4>
+              <p>Supports <code>prefers-reduced-motion</code> parameters, disabling page flips or loading animations upon system request.</p>
+            </div>
+          </div>
+
+          <h2 style="margin-top: var(--space-8);">Performance Latency Budgets</h2>
+          <p>Strict performance targets mapped out in the non-functional requirements:</p>
+          
+          <div class="strategy-table-wrapper">
+            <table class="strategy-table">
+              <thead>
+                <tr>
+                  <th>NFR Measurement</th>
+                  <th>Baseline Target</th>
+                  <th>Maximum Allowance</th>
+                  <th>Test Setup</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Startup Duration</strong></td>
+                  <td>&lt; 1s (Warm start)</td>
+                  <td>&lt; 3s (Cold launch)</td>
+                  <td>Ubuntu 24.04 x86_64</td>
+                </tr>
+                <tr>
+                  <td><strong>Library Render (100 items)</strong></td>
+                  <td>&lt; 50ms</td>
+                  <td>&lt; 100ms</td>
+                  <td>PySide6 QGridLayout</td>
+                </tr>
+                <tr>
+                  <td><strong>Semantic search (Local query)</strong></td>
+                  <td>&lt; 20ms</td>
+                  <td>&lt; 50ms</td>
+                  <td>FAISS IndexFlatIP (MiniLM)</td>
+                </tr>
+                <tr>
+                  <td><strong>Flashcard Flip frame time</strong></td>
+                  <td>16.6ms (60 fps)</td>
+                  <td>33ms (30 fps)</td>
+                  <td>QGraphicsEffect rotations</td>
+                </tr>
+                <tr>
+                  <td><strong>AI Chat token latency</strong></td>
+                  <td>&lt; 50ms (First token)</td>
+                  <td>&lt; 100ms</td>
+                  <td>llama.cpp GGUF streaming</td>
+                </tr>
+                <tr>
+                  <td><strong>PDF processing (100 pages)</strong></td>
+                  <td>&lt; 60s (8GB RAM)</td>
+                  <td>&lt; 120s (4GB RAM)</td>
+                  <td>Single-thread processor queue</td>
+                </tr>
+                <tr>
+                  <td><strong>System Memory Idle</strong></td>
+                  <td>&lt; 120MB</td>
+                  <td>&lt; 200MB</td>
+                  <td>No model loaded in cache</td>
+                </tr>
+                <tr>
+                  <td><strong>System Memory (Processing)</strong></td>
+                  <td>&lt; 800MB (1B LLM)</td>
+                  <td>&lt; 1.2GB</td>
+                  <td>Qwen2.5-1.5B active inference</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
