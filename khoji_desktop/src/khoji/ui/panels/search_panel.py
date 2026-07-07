@@ -16,12 +16,13 @@ from PySide6.QtWidgets import (
 )
 
 from khoji.database.db import Database
+from khoji.ui.animations import fade_in
 
 
 class SearchResultCard(QFrame):
-    """Single search result card."""
+    """Single search result card with fade-in."""
 
-    def __init__(self, result: dict, parent=None) -> None:
+    def __init__(self, result: dict, parent=None, index: int = 0) -> None:
         super().__init__(parent)
         self.setObjectName("card")
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
@@ -30,6 +31,8 @@ class SearchResultCard(QFrame):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(16, 12, 16, 12)
         layout.setSpacing(6)
+
+        fade_in(self, duration=200, delay=index * 50)
 
         # Source and score
         source = result.get("filename", result.get("title", "Unknown"))
@@ -192,8 +195,8 @@ class SearchView(QWidget):
         self._scroll.setVisible(True)
         self._count_label.setText(f"{len(results)} results")
 
-        for r in results:
-            card = SearchResultCard(r)
+        for i, r in enumerate(results):
+            card = SearchResultCard(r, index=i)
             self._results_layout.insertWidget(self._results_layout.count() - 1, card)
 
     def _clear_results(self) -> None:

@@ -17,13 +17,15 @@ from PySide6.QtWidgets import (
 )
 
 from khoji.database.db import Database
+from khoji.ui.animations import fade_in, slide_in
 
 
 class ChatBubble(QFrame):
-    """Styled chat message bubble."""
+    """Styled chat message bubble with animations."""
 
-    def __init__(self, role: str, content: str, parent=None) -> None:
+    def __init__(self, role: str, content: str, parent=None, animate: bool = True) -> None:
         super().__init__(parent)
+        self._role = role
         self.setObjectName("chatBubbleUser" if role == "user" else "chatBubbleAssistant")
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -31,17 +33,21 @@ class ChatBubble(QFrame):
         layout.setContentsMargins(16, 12, 16, 12)
         layout.setSpacing(4)
 
-        # Role label
         role_label = QLabel("You" if role == "user" else "Khoji")
         role_label.setObjectName("accent" if role == "assistant" else "muted")
         role_label.setStyleSheet("font-weight: 600; font-size: 12px;")
         layout.addWidget(role_label)
 
-        # Content
-        content_label = QLabel(content)
-        content_label.setWordWrap(True)
-        content_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        layout.addWidget(content_label)
+        self._content_label = QLabel(content)
+        self._content_label.setWordWrap(True)
+        self._content_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        layout.addWidget(self._content_label)
+
+        if animate:
+            if role == "user":
+                slide_in(self, direction="right", distance=30, duration=250)
+            else:
+                fade_in(self, duration=300)
 
 
 class ChatWorker(QThread):

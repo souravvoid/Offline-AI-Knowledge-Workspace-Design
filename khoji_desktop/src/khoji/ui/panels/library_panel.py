@@ -19,23 +19,25 @@ from PySide6.QtWidgets import (
 
 from khoji.database.db import Database
 from khoji.pipeline.processor import ProcessingWorker
+from khoji.ui.animations import fade_in
 
 
 class DocumentCard(QFrame):
-    """Card widget for a single document."""
+    """Card widget for a single document with stagger fade-in."""
 
     clicked = Signal(str)
 
-    def __init__(self, doc: dict, parent=None) -> None:
+    def __init__(self, doc: dict, parent=None, index: int = 0) -> None:
         super().__init__(parent)
         self.doc_id = doc["id"]
         self.setObjectName("card")
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setFixedHeight(140)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        # Accessibility enhancements
         self.setAccessibleName(f"Document Card: {doc.get('title', doc.get('filename', ''))}")
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self._index = index
+        fade_in(self, duration=250, delay=index * 80)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(16, 16, 16, 16)
@@ -152,8 +154,8 @@ class LibraryView(QWidget):
         self._empty_state.setVisible(False)
         self._scroll.setVisible(True)
 
-        for doc in docs:
-            card = DocumentCard(doc)
+        for i, doc in enumerate(docs):
+            card = DocumentCard(doc, index=i)
             card.clicked.connect(self.document_selected.emit)
             self._cards_layout.addWidget(card)
 
@@ -196,7 +198,12 @@ class LibraryView(QWidget):
     # ── Drag & Drop ────────────────────────────────────────────
     def dragEnterEvent(self, event: QDragEnterEvent) -> None:
         if event.mimeData().hasUrls():
+            self._show_drop_zone()
             event.acceptProposedAction()
+
+    def dragLeaveEvent(self, event) -> None:
+        self._hide_drop_zone()
+        super().dragLeaveEvent(event)
 
     def dropEvent(self, event: QDropEvent) -> None:
         for url in event.mimeData().urls():
@@ -204,6 +211,39 @@ class LibraryView(QWidget):
             if path.lower().endswith(".pdf"):
                 self._start_processing(path)
                 break
+
+
+    def _show_drop_zone(self) -> None:
+        if not hasattr(self, "_drop_overlay"):
+            self._drop_overlay = QFrame(self)
+            self._drop_overlay.setObjectName("dropZone")
+            self._drop_overlay.setGeometry(self.rect())
+            drop_layout = QVBoxLayout(self._drop_overlay)
+            drop_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            drop_layout.setSpacing(12)
+
+            icon = QLabel("📄")
+            icon.setStyleSheet("font-size: 48px;")
+            icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            drop_layout.addWidget(icon)
+
+            text = QLabel("Drop your document here")
+            text.setStyleSheet("font-size: 16px; color: #818CF8; font-weight: 600;")
+            text.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            drop_layout.addWidget(text)
+
+            sub = QLabel("Supports PDF files")
+            sub.setStyleSheet("font-size: 12px; color: #64748B;")
+            sub.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            drop_layout.addWidget(sub)
+
+        self._drop_overlay.setVisible(True)
+        self._drop_overlay.raise_()
+        fade_in(self._drop_overlay, duration=200)
+
+    def _hide_drop_zone(self) -> None:
+        if hasattr(self, "_drop_overlay"):
+            self._drop_overlay.setVisible(False)
 
 
 def _format_size(size_bytes: int) -> str:

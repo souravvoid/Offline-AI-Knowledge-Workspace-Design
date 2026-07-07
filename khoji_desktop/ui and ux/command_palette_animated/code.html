@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Khoji | Command Palette</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-error-container": "#ffdad6",
+                "on-tertiary-fixed-variant": "#5d4200",
+                "primary-fixed-dim": "#bdc2ff",
+                "secondary": "#bcc7df",
+                "surface-variant": "#34343b",
+                "tertiary-fixed": "#ffdea4",
+                "error-container": "#93000a",
+                "surface-container-high": "#292a30",
+                "secondary-fixed": "#d7e3fc",
+                "secondary-container": "#3c475b",
+                "surface-tint": "#bdc2ff",
+                "outline": "#908f9e",
+                "background": "#121319",
+                "surface-bright": "#383940",
+                "surface-dim": "#121319",
+                "tertiary-container": "#c08d00",
+                "syntax-keyword": "#bdc2ff",
+                "outline-variant": "#454653",
+                "on-secondary-container": "#aab5cd",
+                "on-secondary-fixed": "#101c2e",
+                "surface": "#121319",
+                "on-surface-variant": "#c6c5d5",
+                "surface-container-highest": "#34343b",
+                "syntax-type": "#f7bd3e",
+                "on-tertiary-container": "#3e2b00",
+                "inverse-on-surface": "#2f3037",
+                "on-primary-fixed-variant": "#2f3aa3",
+                "on-error": "#690005",
+                "inverse-surface": "#e3e1ea",
+                "on-primary-container": "#101b8a",
+                "tertiary": "#f7bd3e",
+                "primary-fixed": "#e0e0ff",
+                "surface-container-lowest": "#0d0e14",
+                "on-primary-fixed": "#000767",
+                "syntax-string": "#aeb9d0",
+                "tertiary-fixed-dim": "#f7bd3e",
+                "on-secondary": "#263144",
+                "on-surface": "#e3e1ea",
+                "secondary-fixed-dim": "#bcc7df",
+                "on-tertiary": "#412d00",
+                "outline-muted": "rgba(144, 143, 158, 0.1)",
+                "primary-container": "#818cf8",
+                "error": "#ffb4ab",
+                "inverse-primary": "#4953bc",
+                "syntax-comment": "#454653",
+                "on-primary": "#131e8c",
+                "surface-container": "#1e1f26",
+                "surface-glass": "rgba(31, 31, 38, 0.8)",
+                "on-background": "#e3e1ea",
+                "on-secondary-fixed-variant": "#3c475b",
+                "primary": "#bdc2ff",
+                "on-tertiary-fixed": "#261900",
+                "surface-container-low": "#1a1b21"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "margin-page": "1.5rem",
+                "gutter-grid": "1rem",
+                "space-12": "48px",
+                "space-6": "24px",
+                "space-2": "8px",
+                "space-1": "4px",
+                "space-4": "16px",
+                "space-8": "32px"
+            },
+            "fontFamily": {
+                "headline-md": ["Inter"],
+                "code-xs": ["JetBrains Mono"],
+                "headline-xl": ["Inter"],
+                "body-md": ["\"Source Serif 4\""],
+                "code-sm": ["JetBrains Mono"],
+                "headline-lg-mobile": ["Inter"],
+                "headline-lg": ["Inter"],
+                "label-md": ["Inter"]
+            },
+            "fontSize": {
+                "headline-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                "code-xs": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                "headline-xl": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "code-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "headline-lg-mobile": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                "headline-lg": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                "label-md": ["14px", {"lineHeight": "1.0", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes palette-entrance {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes staggered-up {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(189, 194, 255, 0.4); }
+            70% { box-shadow: 0 0 0 4px rgba(189, 194, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(189, 194, 255, 0); }
+        }
+        @keyframes shortcut-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background-color: rgba(30, 31, 38, 0.85);
+            animation: palette-entrance 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .command-item {
+            position: relative;
+            border-left: 2px solid transparent;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .command-item:hover, .command-item-active {
+            background-color: rgba(189, 194, 255, 0.08);
+            border-left-color: #bdc2ff;
+        }
+        .command-item:hover .command-icon {
+            color: #bdc2ff;
+        }
+        
+        .staggered-item {
+            opacity: 0;
+            animation: staggered-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.15s; }
+        .stagger-3 { animation-delay: 0.2s; }
+        .stagger-4 { animation-delay: 0.25s; }
+        .stagger-5 { animation-delay: 0.3s; }
+        .stagger-6 { animation-delay: 0.35s; }
+        .stagger-7 { animation-delay: 0.4s; }
+
+        .search-input-focus:focus-within {
+            animation: pulse-ring 2s infinite;
+        }
+
+        .shortcut-badge:hover {
+            animation: shortcut-bounce 0.3s ease-in-out;
+            color: #bdc2ff;
+            border-color: #bdc2ff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #454653;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface-dim text-on-surface font-body-md selection:bg-primary-container/30 overflow-hidden h-screen w-screen">
+<!-- Global Layout Container -->
+<div class="flex h-full w-full">
+<!-- SideNavBar (Rail) - Derived from JSON -->
+<aside class="fixed left-0 top-0 h-full z-40 bg-surface-container-lowest dark:bg-surface-container-lowest border-r border-outline-variant w-16 flex flex-col items-center py-4 cursor-pointer duration-200 ease-in-out">
+<div class="mb-8">
+<span class="font-headline-lg text-headline-lg font-bold text-primary">K</span>
+</div>
+<nav class="flex flex-col gap-6 items-center flex-1">
+<div class="text-primary bg-primary-container/20 rounded-lg p-2 transition-colors duration-200" title="Explorer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-2 rounded-lg transition-colors duration-200" title="Search">
+<span class="material-symbols-outlined">search</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-2 rounded-lg transition-colors duration-200" title="Graph View">
+<span class="material-symbols-outlined">account_tree</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-2 rounded-lg transition-colors duration-200" title="Vault">
+<span class="material-symbols-outlined">storage</span>
+</div>
+</nav>
+<div class="mt-auto flex flex-col gap-6 items-center">
+<div class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-2 rounded-lg transition-colors duration-200" title="Settings">
+<span class="material-symbols-outlined">settings</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Canvas (Blurred behind palette) -->
+<main class="flex-1 ml-16 flex flex-col h-full bg-surface-dim">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-4 h-12 bg-surface-container-low dark:bg-surface-container-low border-b border-outline-variant z-10 transition-all duration-150">
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-headline-md font-black text-primary">Khoji</span>
+<nav class="hidden md:flex gap-4">
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-all" href="#">File</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-all" href="#">Edit</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-all" href="#">View</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-all" href="#">Go</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-all" href="#">Help</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-3 py-1 rounded-lg hover:brightness-110 transition-all">Sync</button>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">history</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Background Content Visualization (Knowledge Explorer) -->
+<section class="flex-1 p-space-8 grid grid-cols-12 gap-gutter-grid opacity-20 transition-opacity duration-500">
+<div class="col-span-8 space-y-6">
+<div class="p-6 border border-outline-muted rounded-xl bg-surface-container shadow-2xl">
+<h1 class="font-headline-xl text-headline-xl mb-4">Pipeline Analysis: Q3 Infrastructure</h1>
+<p class="text-on-surface-variant leading-relaxed">Analyzing the core data pipelines... Initializing vector embeddings for localized storage. The metadata suggests a high-density dependency graph in the current vault segment.</p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 border border-outline-muted rounded-xl bg-surface-container relative overflow-hidden group">
+<span class="font-label-md text-label-md text-primary mb-2 block">active_nodes</span>
+<span class="font-headline-lg text-headline-lg">1,402</span>
+</div>
+<div class="p-4 border border-outline-muted rounded-xl bg-surface-container">
+<span class="font-label-md text-label-md text-tertiary mb-2 block">sync_status</span>
+<span class="font-headline-lg text-headline-lg">98% Stable</span>
+</div>
+</div>
+</div>
+<div class="col-span-4 border border-outline-muted rounded-xl bg-surface-container overflow-hidden">
+<div class="p-4 border-b border-outline-variant bg-surface-container-high flex justify-between items-center">
+<span class="font-label-md text-label-md">Visualizer.ts</span>
+<div class="flex gap-1">
+<div class="w-3 h-3 rounded-full bg-error opacity-40"></div>
+<div class="w-3 h-3 rounded-full bg-tertiary opacity-40"></div>
+<div class="w-3 h-3 rounded-full bg-primary opacity-40"></div>
+</div>
+</div>
+<div class="p-4 font-code-sm text-code-sm h-full bg-surface-container-low">
+<div class="flex gap-4">
+<div class="text-syntax-comment select-none opacity-30 text-right w-6">1<br/>2<br/>3<br/>4<br/>5</div>
+<div class="flex-1 overflow-x-auto whitespace-pre">
+<span class="text-syntax-keyword">const</span> <span class="text-on-surface">graph</span> = <span class="text-syntax-keyword">new</span> <span class="text-syntax-type">KnowledgeGraph</span>();
+<span class="text-on-surface">graph.</span><span class="text-syntax-type">initialize</span>({
+  <span class="text-on-surface">vault:</span> <span class="text-syntax-string">'local'</span>,
+  <span class="text-on-surface">density:</span> <span class="text-syntax-type">0.85</span>
+});</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Command Palette Overlay -->
+<div class="fixed inset-0 z-50 flex items-start justify-center pt-[153px] transition-all duration-300 backdrop-blur-[4px] bg-black/40 animate-in fade-in" id="palette-backdrop">
+<div class="w-full max-w-2xl mx-4 glass-panel border border-outline-variant rounded-xl shadow-2xl overflow-hidden">
+<!-- Search Input Header -->
+<div class="p-5 flex items-center gap-4 border-b border-outline-variant bg-surface-container-high/50 search-input-focus group">
+<span class="material-symbols-outlined text-primary text-2xl transition-transform group-focus-within:scale-110">search</span>
+<input autofocus="" class="flex-1 bg-transparent border-none text-on-surface font-headline-md text-headline-md focus:ring-0 placeholder:text-on-surface-variant/40" placeholder="What do you want to do?" type="text"/>
+<div class="flex items-center gap-1 bg-surface-container-highest px-2 py-1 rounded text-on-surface-variant font-code-xs text-code-xs border border-outline-variant shortcut-badge transition-all cursor-default">
+<span>Esc</span>
+</div>
+</div>
+<!-- Suggestions List -->
+<div class="py-2 max-h-[400px] overflow-y-auto">
+<div class="px-5 py-2">
+<h3 class="font-label-md text-label-md text-on-surface-variant opacity-60 uppercase tracking-widest text-[10px]">Suggested Actions</h3>
+</div>
+<button class="w-full px-5 py-3 flex items-center gap-4 command-item group transition-all staggered-item stagger-1">
+<span class="material-symbols-outlined command-icon text-on-surface-variant transition-colors">picture_as_pdf</span>
+<div class="flex-1 text-left">
+<p class="font-label-md text-label-md text-on-surface">Import PDF...</p>
+<p class="font-code-xs text-code-xs text-on-surface-variant/60">Upload local documents to the current vault</p>
+</div>
+<div class="opacity-0 group-hover:opacity-100 px-2 py-0.5 rounded bg-primary/10 text-primary font-code-xs text-code-xs transition-opacity">Run</div>
+</button>
+<button class="w-full px-5 py-3 flex items-center gap-4 command-item group transition-all staggered-item stagger-2">
+<span class="material-symbols-outlined command-icon text-on-surface-variant transition-colors">psychology</span>
+<div class="flex-1 text-left">
+<p class="font-label-md text-label-md text-on-surface">Switch Model to Llama 3</p>
+<p class="font-code-xs text-code-xs text-on-surface-variant/60">Currently using GPT-4o-Mini</p>
+</div>
+</button>
+<button class="w-full px-5 py-3 flex items-center gap-4 command-item group transition-all staggered-item stagger-3">
+<span class="material-symbols-outlined command-icon text-on-surface-variant transition-colors">schema</span>
+<div class="flex-1 text-left">
+<p class="font-label-md text-label-md text-on-surface">Open Schema Explorer</p>
+<p class="font-code-xs text-code-xs text-on-surface-variant/60">View and edit data relations</p>
+</div>
+<span class="text-on-surface-variant/40 font-code-xs text-code-xs shortcut-badge px-1 rounded border border-transparent hover:border-outline-variant">S P</span>
+</button>
+<button class="w-full px-5 py-3 flex items-center gap-4 command-item group transition-all staggered-item stagger-4">
+<span class="material-symbols-outlined command-icon text-on-surface-variant transition-colors">map</span>
+<div class="flex-1 text-left">
+<p class="font-label-md text-label-md text-on-surface">Go to Pipeline Map</p>
+<p class="font-code-xs text-code-xs text-on-surface-variant/60">Visual flow of data ingestion</p>
+</div>
+</button>
+<button class="w-full px-5 py-3 flex items-center gap-4 command-item group transition-all staggered-item stagger-5">
+<span class="material-symbols-outlined command-icon text-error transition-colors">auto_delete</span>
+<div class="flex-1 text-left">
+<p class="font-label-md text-label-md text-on-surface">Clear AI Memory</p>
+<p class="font-code-xs text-code-xs text-on-surface-variant/60">Purge session context and active embeddings</p>
+</div>
+</button>
+<div class="mt-4 border-t border-outline-variant px-5 py-3 staggered-item stagger-6">
+<h3 class="font-label-md text-label-md text-on-surface-variant opacity-60 uppercase tracking-widest text-[10px]">Recent Documents</h3>
+<div class="mt-2 space-y-1">
+<div class="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-surface-container-high group/doc cursor-pointer transition-colors staggered-item stagger-7">
+<span class="material-symbols-outlined text-sm text-on-surface-variant group-hover/doc:text-primary">description</span>
+<span class="text-label-md font-label-md text-on-surface-variant group-hover/doc:text-on-surface">q3_infrastructure_report.md</span>
+</div>
+<div class="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-surface-container-high group/doc cursor-pointer transition-colors staggered-item stagger-7">
+<span class="material-symbols-outlined text-sm text-on-surface-variant group-hover/doc:text-primary">description</span>
+<span class="text-label-md font-label-md text-on-surface-variant group-hover/doc:text-on-surface">api_integration_docs.txt</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Palette Footer -->
+<div class="px-5 py-3 bg-surface-container-low flex items-center justify-between border-t border-outline-variant text-on-surface-variant">
+<div class="flex gap-6">
+<div class="flex items-center gap-1.5 group cursor-default">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[10px] font-code-xs shortcut-badge">⏎</span>
+<span class="text-[10px] uppercase font-label-md opacity-70">Enter to run</span>
+</div>
+<div class="flex items-center gap-1.5 group cursor-default">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[10px] font-code-xs shortcut-badge">↑↓</span>
+<span class="text-[10px] uppercase font-label-md opacity-70">Navigate</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-code-xs opacity-50">Khoji Command Engine v1.0.4</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Footer - Derived from JSON -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-between items-center px-3 bg-primary-container dark:bg-secondary-container h-6 cursor-default">
+<div class="flex items-center gap-4">
+<span class="font-code text-code-xs font-bold text-on-primary-container">Index: 1,402 docs | 98% complete</span>
+</div>
+<div class="flex gap-4 font-code text-code-xs text-on-primary-container">
+<span class="opacity-80 hover:opacity-100 transition-opacity">v1.0.4-stable</span>
+<span class="opacity-80 hover:opacity-100 transition-opacity">Line 42, Col 12</span>
+<span class="opacity-80 hover:opacity-100 transition-opacity">UTF-8</span>
+<span class="font-bold underline">TypeScript</span>
+</div>
+</footer>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const palette = document.getElementById('palette-backdrop');
+                palette.classList.add('opacity-0');
+                const modal = palette.querySelector('.glass-panel');
+                modal.style.transition = 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
+                modal.style.transform = 'scale(0.95)';
+                modal.style.opacity = '0';
+                setTimeout(() => palette.style.display = 'none', 200);
+            }
+        });
+
+        const items = document.querySelectorAll('.command-item');
+        items.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                items.forEach(i => i.classList.remove('command-item-active'));
+                item.classList.add('command-item-active');
+            });
+        });
+    </script>
+</body></html>

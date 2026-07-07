@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Khoji | Knowledge Explorer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;family=Source+Serif+4:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-error-container": "#ffdad6",
+                "on-tertiary-fixed-variant": "#5d4200",
+                "primary-fixed-dim": "#bdc2ff",
+                "secondary": "#bcc7df",
+                "surface-variant": "#34343b",
+                "tertiary-fixed": "#ffdea4",
+                "error-container": "#93000a",
+                "surface-container-high": "#292a30",
+                "secondary-fixed": "#d7e3fc",
+                "secondary-container": "#3c475b",
+                "surface-tint": "#bdc2ff",
+                "outline": "#908f9e",
+                "background": "#121319",
+                "surface-bright": "#383940",
+                "surface-dim": "#121319",
+                "tertiary-container": "#c08d00",
+                "syntax-keyword": "#bdc2ff",
+                "outline-variant": "#454653",
+                "on-secondary-container": "#aab5cd",
+                "on-secondary-fixed": "#101c2e",
+                "surface": "#121319",
+                "on-surface-variant": "#c6c5d5",
+                "surface-container-highest": "#34343b",
+                "syntax-type": "#f7bd3e",
+                "on-tertiary-container": "#3e2b00",
+                "inverse-on-surface": "#2f3037",
+                "on-primary-fixed-variant": "#2f3aa3",
+                "on-error": "#690005",
+                "inverse-surface": "#e3e1ea",
+                "on-primary-container": "#101b8a",
+                "tertiary": "#f7bd3e",
+                "primary-fixed": "#e0e0ff",
+                "surface-container-lowest": "#0d0e14",
+                "on-primary-fixed": "#000767",
+                "syntax-string": "#aeb9d0",
+                "tertiary-fixed-dim": "#f7bd3e",
+                "on-secondary": "#263144",
+                "on-surface": "#e3e1ea",
+                "secondary-fixed-dim": "#bcc7df",
+                "on-tertiary": "#412d00",
+                "outline-muted": "rgba(144, 143, 158, 0.1)",
+                "primary-container": "#818cf8",
+                "error": "#ffb4ab",
+                "inverse-primary": "#4953bc",
+                "syntax-comment": "#454653",
+                "on-primary": "#131e8c",
+                "surface-container": "#1e1f26",
+                "surface-glass": "rgba(31, 31, 38, 0.8)",
+                "on-background": "#e3e1ea",
+                "on-secondary-fixed-variant": "#3c475b",
+                "primary": "#bdc2ff",
+                "on-tertiary-fixed": "#261900",
+                "surface-container-low": "#1a1b21"
+            },
+            "fontFamily": {
+                "headline-md": ["Inter"],
+                "code-xs": ["JetBrains Mono"],
+                "headline-xl": ["Inter"],
+                "body-md": ["\"Source Serif 4\""],
+                "code-sm": ["JetBrains Mono"],
+                "headline-lg": ["Inter"],
+                "label-md": ["Inter"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-panel {
+            background: rgba(30, 31, 38, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(144, 143, 158, 0.1);
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #454653; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #bdc2ff; }
+        
+        .code-gutter {
+            counter-reset: line;
+        }
+        .code-line::before {
+            counter-increment: line;
+            content: counter(line);
+            display: inline-block;
+            width: 2rem;
+            margin-right: 1rem;
+            text-align: right;
+            color: #454653;
+        }
+
+        /* Motion System */
+        .sidebar-transition {
+            transition: width 300px cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(-8px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .file-icon-animate {
+            animation: slideInRight 0.3s ease forwards;
+        }
+
+        @keyframes typewriter {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .typewriter-content > * {
+            animation: typewriter 0.5s ease forwards;
+            opacity: 0;
+        }
+        .typewriter-content > *:nth-child(1) { animation-delay: 0.1s; }
+        .typewriter-content > *:nth-child(2) { animation-delay: 0.2s; }
+        .typewriter-content > *:nth-child(3) { animation-delay: 0.3s; }
+        .typewriter-content > *:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes springIn {
+            0% { transform: scale(0.9) translateY(10px); opacity: 0; }
+            70% { transform: scale(1.02) translateY(-2px); opacity: 1; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .chat-bubble-animate {
+            animation: springIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes thinkingPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .thinking-indicator {
+            animation: thinkingPulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); opacity: 1; }
+            15% { transform: scale(1.1); opacity: 1; }
+            30% { transform: scale(1); opacity: 1; }
+            45% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .status-heartbeat {
+            animation: heartbeat 3s infinite ease-in-out;
+        }
+
+        .sidebar-collapsed {
+            width: 0 !important;
+            overflow: hidden;
+            border-right-width: 0 !important;
+            border-left-width: 0 !important;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary/30 h-screen flex flex-col overflow-hidden">
+<!-- Top AppBar -->
+<header class="flex justify-between items-center w-full px-4 h-12 ml-16 fixed top-0 left-0 z-40 bg-surface-container-low border-b border-outline-variant">
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-headline-md font-black text-primary tracking-tighter">Khoji</span>
+<div class="flex items-center gap-4">
+<nav class="flex gap-4">
+<button class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1 transition-all duration-150">File</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container-high px-2 py-0.5 rounded transition-all duration-150">Edit</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container-high px-2 py-0.5 rounded transition-all duration-150">View</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container-high px-2 py-0.5 rounded transition-all duration-150">Go</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container-high px-2 py-0.5 rounded transition-all duration-150">Help</button>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded text-xs font-bold flex items-center gap-2 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-[14px]">sync</span>
+                Sync
+            </button>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button class="p-1.5 hover:bg-surface-container-high rounded transition-all"><span class="material-symbols-outlined">history</span></button>
+<button class="p-1.5 hover:bg-surface-container-high rounded transition-all"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-1.5 hover:bg-surface-container-high rounded transition-all"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Activity Bar) -->
+<aside class="fixed left-0 top-0 h-full z-50 flex flex-col items-center py-4 w-16 bg-surface-container-lowest border-r border-outline-variant">
+<div class="mb-8">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<nav class="flex flex-col gap-4 flex-1">
+<button class="p-2 text-primary bg-primary-container/20 rounded-lg active-nav cursor-pointer duration-200 ease-in-out transition-colors" onclick="toggleSidebar('file-tree')" title="Explorer">
+<span class="material-symbols-outlined">folder</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg cursor-pointer duration-200 ease-in-out transition-colors" title="Search">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg cursor-pointer duration-200 ease-in-out transition-colors" title="Graph View">
+<span class="material-symbols-outlined">account_tree</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg cursor-pointer duration-200 ease-in-out transition-colors" title="Vault">
+<span class="material-symbols-outlined">storage</span>
+</button>
+</nav>
+<div class="flex flex-col gap-4 mb-4">
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg cursor-pointer duration-200 ease-in-out transition-colors" title="Settings">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A macro close-up of a high-tech obsidian texture with glowing blue micro-circuits, suggesting a sophisticated user profile avatar for a technical application. The lighting is moody and focused, following a dark corporate noir aesthetic with deep charcoal and vibrant cobalt accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjsXaFrwxxm2Oz81zPVrXRcL2rVo2iI6wnQR84NiLRxtFxnca2hQmIs7Sqt3O_p-_XDg9cd4yTsJpOBPTnBgn_I2zEkc1AUG3viJ0Pe1okcigfh_AmrWeHldg6A4lSL0v5sksT1fY_Wby1vajACX-o81LS0fpjyFNFOdzsfDu0HSQU_4RfYp52JXYpoYw_4TWsUQuZLuOS6hj64cFbJC1tYxvW_3WfiRs8xjK9c0UB5i_nrLeTt2OfT7Xg3klsOqsfmZd2bD6etOE2"/>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-16 mt-12 mb-6 flex overflow-hidden">
+<!-- Primary Sidebar: File Tree -->
+<aside class="w-64 bg-surface-container-low border-r border-outline-variant flex flex-col sidebar-transition" id="file-tree">
+<div class="p-3 border-b border-outline-variant flex justify-between items-center shrink-0">
+<h2 class="font-headline-md text-sm font-bold uppercase tracking-widest text-on-surface-variant whitespace-nowrap">Local Vault</h2>
+<button class="p-1 hover:bg-surface-container-high rounded"><span class="material-symbols-outlined text-sm">create_new_folder</span></button>
+</div>
+<div class="flex-1 overflow-y-auto p-2 space-y-1">
+<div class="group flex items-center gap-2 p-1.5 rounded-lg hover:bg-surface-container-high cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined text-[18px] text-tertiary file-icon-animate">folder_open</span>
+<span class="font-label-md text-sm">Documentation</span>
+</div>
+<div class="ml-4 space-y-1">
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-primary-container/10 border border-primary/10 cursor-pointer hover:bg-primary-container/20 transition-all duration-200">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-syntax-keyword file-icon-animate">description</span>
+<span class="font-label-md text-sm text-primary">system_arch.md</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(189,194,255,0.6)]"></span>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded-lg hover:bg-surface-container-high cursor-pointer transition-all duration-200 group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant file-icon-animate">description</span>
+<span class="font-label-md text-sm">api_reference.md</span>
+</div>
+<span class="text-[10px] text-syntax-comment opacity-0 group-hover:opacity-100 transition-opacity">Indexed</span>
+</div>
+</div>
+<div class="group flex items-center gap-2 p-1.5 rounded-lg hover:bg-surface-container-high cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant file-icon-animate">folder</span>
+<span class="font-label-md text-sm">Experiments</span>
+</div>
+<div class="group flex items-center gap-2 p-1.5 rounded-lg hover:bg-surface-container-high cursor-pointer transition-all duration-200">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant file-icon-animate">description</span>
+<span class="font-label-md text-sm">pipeline_v2.log</span>
+</div>
+<div class="ml-auto flex items-center gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-syntax-type animate-pulse"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Central Workspace: Split Pane -->
+<section class="flex-1 flex overflow-hidden">
+<!-- Left Pane: Markdown Editor -->
+<div class="flex-1 flex flex-col min-w-0 border-r border-outline-variant bg-surface">
+<div class="h-10 flex items-center px-4 gap-4 bg-surface-container border-b border-outline-variant">
+<div class="flex items-center gap-2 border-b-2 border-primary h-full px-2">
+<span class="font-label-md text-xs text-primary">system_arch.md</span>
+<span class="material-symbols-outlined text-[14px] text-primary cursor-pointer hover:opacity-70 transition-opacity">close</span>
+</div>
+<div class="ml-auto flex items-center gap-4 text-on-surface-variant">
+<span class="text-[10px] font-code-xs bg-outline-variant/30 px-1.5 py-0.5 rounded">Markdown</span>
+<span class="material-symbols-outlined text-[18px] hover:text-primary cursor-pointer transition-colors">visibility</span>
+<span class="material-symbols-outlined text-[18px] hover:text-primary cursor-pointer transition-colors">share</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-8 font-code-sm text-code-sm selection:bg-primary/20">
+<div class="max-w-3xl mx-auto space-y-4">
+<div class="flex gap-4">
+<div class="code-gutter flex flex-col text-right leading-relaxed select-none pt-1">
+<span class="code-line"></span>
+<span class="code-line"></span>
+<span class="code-line"></span>
+<span class="code-line"></span>
+<span class="code-line"></span>
+<span class="code-line"></span>
+<span class="code-line"></span>
+</div>
+<div class="flex-1 space-y-2 leading-relaxed typewriter-content">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-4"># System Architecture</h1>
+<p class="text-on-surface/90 font-body-md text-body-md">The Khoji system utilizes a <span class="text-syntax-type">hybrid vector-relational</span> storage engine. All documents are processed through the indexing pipeline before being committed to the vault.</p>
+<div class="p-4 bg-surface-container-high rounded-lg border border-outline-muted font-code-sm transition-transform hover:scale-[1.01] duration-300">
+<span class="text-syntax-keyword">const</span> <span class="text-primary">pipeline</span> = <span class="text-syntax-keyword">new</span> <span class="text-syntax-type">KhojiEngine</span>({<br/>
+                                      vault: <span class="text-syntax-string">'./local_vault'</span>,<br/>
+                                      mode: <span class="text-syntax-string">'ultra-precise'</span><br/>
+                                    });
+                                </div>
+<p class="text-on-surface/80 font-body-md text-body-md italic mt-4">Note: Ensure schema parity between the document chunks and the metadata provider.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Pane: Schema Explorer -->
+<div class="w-80 flex flex-col bg-surface-container-lowest border-l border-outline-variant sidebar-transition" id="schema-pane">
+<div class="h-10 flex items-center px-3 justify-between bg-surface-container-high border-b border-outline-variant shrink-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary">database</span>
+<span class="font-label-md text-xs font-bold whitespace-nowrap">Schema Explorer</span>
+</div>
+<button class="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-on-surface transition-colors" onclick="toggleSidebar('schema-pane')">close</button>
+</div>
+<div class="flex-1 p-3 overflow-y-auto">
+<div class="mb-4">
+<div class="flex items-center gap-2 mb-2 p-1 px-2 bg-secondary-container/20 rounded border border-outline-variant/30">
+<span class="material-symbols-outlined text-[16px] text-syntax-type">table_chart</span>
+<span class="font-code-xs text-xs font-bold text-on-secondary-container">document_chunks</span>
+</div>
+<div class="space-y-1 ml-4">
+<div class="flex justify-between items-center text-[11px] font-code-xs text-on-surface-variant hover:bg-surface-container-high p-1 rounded transition-colors cursor-pointer group">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-syntax-keyword">key</span> chunk_id</span>
+<span class="text-syntax-comment">uuid</span>
+</div>
+<div class="flex justify-between items-center text-[11px] font-code-xs text-on-surface-variant hover:bg-surface-container-high p-1 rounded transition-colors cursor-pointer">
+<span class="flex items-center gap-2"><span class="w-[14px]"></span> parent_doc_id</span>
+<span class="text-syntax-comment">uuid</span>
+</div>
+<div class="flex justify-between items-center text-[11px] font-code-xs text-on-surface-variant hover:bg-surface-container-high p-1 rounded transition-colors cursor-pointer">
+<span class="flex items-center gap-2"><span class="w-[14px]"></span> content_vector</span>
+<span class="text-syntax-comment">vector(1536)</span>
+</div>
+<div class="flex justify-between items-center text-[11px] font-code-xs text-on-surface-variant hover:bg-surface-container-high p-1 rounded transition-colors cursor-pointer">
+<span class="flex items-center gap-2"><span class="w-[14px]"></span> raw_text</span>
+<span class="text-syntax-comment">text</span>
+</div>
+<div class="flex justify-between items-center text-[11px] font-code-xs text-on-surface-variant hover:bg-surface-container-high p-1 rounded transition-colors cursor-pointer">
+<span class="flex items-center gap-2"><span class="w-[14px]"></span> created_at</span>
+<span class="text-syntax-comment">timestamp</span>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-2 p-1 px-2 hover:bg-surface-container-high rounded cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline">table_view</span>
+<span class="font-code-xs text-xs text-on-surface-variant">metadata_index</span>
+</div>
+</div>
+</div>
+<div class="p-3 border-t border-outline-variant bg-surface-container-low shrink-0">
+<button class="w-full py-2 bg-secondary-container hover:bg-secondary-container/80 text-on-secondary-container font-label-md text-xs rounded transition-all flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-[16px] group-hover:rotate-90 transition-transform">add</span>
+                        Define Schema
+                    </button>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Intelligence Panel -->
+<aside class="w-80 glass-panel border-l border-outline-variant flex flex-col z-10 sidebar-transition" id="ai-panel">
+<div class="p-4 border-b border-outline-variant flex items-center justify-between shrink-0">
+<div class="flex items-center gap-3">
+<div class="relative">
+<span class="material-symbols-outlined text-primary thinking-indicator" style="font-variation-settings: 'FILL' 1;">neurology</span>
+<div class="absolute -top-1 -right-1 w-2 h-2 bg-syntax-type rounded-full"></div>
+</div>
+<div>
+<h3 class="font-headline-md text-sm font-bold">Intelligence</h3>
+<p class="text-[10px] text-syntax-comment uppercase tracking-tight">Active: Claude 3.5 Sonnet</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-on-surface transition-colors" onclick="toggleSidebar('ai-panel')">close</button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<!-- Chat Bubbles -->
+<div class="flex gap-3 chat-bubble-animate">
+<div class="w-6 h-6 rounded bg-primary/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[14px] text-primary">smart_toy</span>
+</div>
+<div class="bg-surface-container-high p-3 rounded-xl rounded-tl-none border border-outline-muted">
+<p class="text-xs text-on-surface/90 leading-relaxed">I've analyzed your current vault. Would you like me to map the relationships between `system_arch.md` and the existing `document_chunks` table?</p>
+</div>
+</div>
+<div class="flex gap-3 flex-row-reverse chat-bubble-animate" style="animation-delay: 0.2s;">
+<div class="w-6 h-6 rounded bg-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container">person</span>
+</div>
+<div class="bg-primary/10 p-3 rounded-xl rounded-tr-none border border-primary/20">
+<p class="text-xs text-on-surface/90 leading-relaxed">Yes, and also show me any chunks that are currently failing the validation check.</p>
+</div>
+</div>
+<div class="flex gap-3 chat-bubble-animate" style="animation-delay: 0.4s;">
+<div class="w-6 h-6 rounded bg-primary/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[14px] text-primary">smart_toy</span>
+</div>
+<div class="bg-surface-container-high p-3 rounded-xl rounded-tl-none border border-outline-muted">
+<p class="text-xs text-on-surface/90 leading-relaxed">Analyzing... I found 12 orphaned chunks in the `experiments` folder. They lack a defined `parent_doc_id` reference.</p>
+<div class="mt-2 flex gap-2">
+<button class="px-2 py-1 bg-surface-container-highest text-[10px] rounded border border-outline-variant hover:bg-primary/20 transition-all">Fix Orphans</button>
+<button class="px-2 py-1 bg-surface-container-highest text-[10px] rounded border border-outline-variant hover:bg-primary/20 transition-all">View Logs</button>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant bg-surface-container-low shrink-0">
+<div class="relative">
+<textarea class="w-full bg-surface-container-highest border border-outline-variant rounded-lg p-3 pr-10 text-xs focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all resize-none h-20" placeholder="Ask anything about your vault..."></textarea>
+<button class="absolute bottom-3 right-3 text-primary hover:text-primary-fixed-dim transition-colors group">
+<span class="material-symbols-outlined group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">send</span>
+</button>
+</div>
+<div class="flex justify-between items-center mt-2 text-[10px] text-on-surface-variant px-1">
+<div class="flex gap-2">
+<span class="hover:text-primary cursor-pointer transition-colors">/schema</span>
+<span class="hover:text-primary cursor-pointer transition-colors">/graph</span>
+</div>
+<span class="font-code-xs">⌘ + Enter to send</span>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Status Bar -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-between items-center px-3 h-6 bg-primary-container dark:bg-secondary-container">
+<div class="flex items-center gap-4">
+<span class="font-code-xs text-[10px] font-bold text-on-primary-container">Index: 1,402 docs | 98% complete</span>
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-background/30 rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-[98%] transition-all duration-1000" id="indexing-bar"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 text-on-primary-container font-code-xs text-[10px]">
+<div class="flex items-center gap-1 opacity-80 hover:opacity-100 cursor-default status-heartbeat">
+<span class="w-2 h-2 rounded-full bg-green-400"></span>
+<span>System: Stable</span>
+</div>
+<span class="opacity-80 hover:opacity-100 cursor-default">UTF-8</span>
+<span class="opacity-80 hover:opacity-100 cursor-default">Line 42, Col 12</span>
+<span class="font-bold underline cursor-default">v1.0.4-stable</span>
+<span class="opacity-80 hover:opacity-100 cursor-default">TypeScript</span>
+</div>
+</footer>
+<!-- Tooltip System -->
+<div class="fixed hidden bg-surface-container-highest border border-outline-variant px-2 py-1 rounded text-[10px] font-code-xs z-[100] shadow-2xl pointer-events-none" id="tooltip">
+<span id="tooltip-text"></span>
+<span class="text-primary ml-1" id="tooltip-shortcut"></span>
+</div>
+<script>
+        // Simple Micro-interactions
+        const tooltip = document.getElementById('tooltip');
+        const tooltipText = document.getElementById('tooltip-text');
+        const tooltipShortcut = document.getElementById('tooltip-shortcut');
+
+        document.querySelectorAll('[title]').forEach(el => {
+            el.addEventListener('mouseenter', (e) => {
+                const title = el.getAttribute('title');
+                const shortcut = el.dataset.shortcut || '';
+                
+                tooltipText.textContent = title;
+                tooltipShortcut.textContent = shortcut;
+                
+                tooltip.style.left = `${e.clientX + 10}px`;
+                tooltip.style.top = `${e.clientY + 10}px`;
+                tooltip.classList.remove('hidden');
+                
+                el.removeAttribute('title');
+                el._title = title;
+            });
+
+            el.addEventListener('mouseleave', () => {
+                tooltip.classList.add('hidden');
+                el.setAttribute('title', el._title);
+            });
+        });
+
+        // Sidebar Toggle Logic
+        function toggleSidebar(id) {
+            const sidebar = document.getElementById(id);
+            sidebar.classList.toggle('sidebar-collapsed');
+        }
+
+        // Atmospheric Pulsing for Indexing Bar
+        const bar = document.getElementById('indexing-bar');
+        let width = 98;
+        setInterval(() => {
+            if (width < 99.8) {
+                width += 0.01;
+                bar.style.width = `${width}%`;
+            }
+        }, 3000);
+
+        // Simulated content load effect
+        window.addEventListener('load', () => {
+            const editor = document.querySelector('.typewriter-content');
+            // Editor entrance animation is handled by CSS nth-child delays
+        });
+    </script>
+</body></html>

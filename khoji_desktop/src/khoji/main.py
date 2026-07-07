@@ -8,6 +8,7 @@ from __future__ import annotations
 import logging
 import sys
 
+from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QApplication
 
 from khoji.database.db import Database
@@ -16,8 +17,10 @@ from khoji.ui.panels.chat_panel import ChatView
 from khoji.ui.panels.flashcards_panel import FlashcardsView
 from khoji.ui.panels.library_panel import LibraryView
 from khoji.ui.panels.notes_panel import NotesView
+from khoji.ui.panels.processing_pipeline import ProcessingPipeline
 from khoji.ui.panels.quiz_panel import QuizView
 from khoji.ui.panels.search_panel import SearchView
+from khoji.ui.panels.splash_screen import SplashOverlay
 
 logging.basicConfig(
     level=logging.INFO,
@@ -37,7 +40,6 @@ def main() -> None:
 
     window = MainWindow(db)
 
-    # Create panels
     library = LibraryView(db)
     notes = NotesView(db)
     flashcards = FlashcardsView(db)
@@ -45,7 +47,6 @@ def main() -> None:
     chat = ChatView(db)
     search = SearchView(db)
 
-    # Register panels
     window.register_panel("library", library)
     window.register_panel("notes", notes)
     window.register_panel("flashcards", flashcards)
@@ -53,7 +54,6 @@ def main() -> None:
     window.register_panel("chat", chat)
     window.register_panel("search", search)
 
-    # Connect cross-panel signals
     def on_doc_selected(doc_id: str) -> None:
         notes.load_document(doc_id)
         flashcards.load_document(doc_id)
@@ -63,9 +63,16 @@ def main() -> None:
 
     library.document_selected.connect(on_doc_selected)
 
-    # Show
     window.show()
     logger.info("Khoji window shown")
+
+    splash = SplashOverlay(window)
+    splash.setGeometry(window.rect())
+    splash.show()
+    splash.raise_()
+
+    QTimer.singleShot(2000, splash.close)
+
     sys.exit(app.exec())
 
 

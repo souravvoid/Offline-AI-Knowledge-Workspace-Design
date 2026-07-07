@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Khoji | Initializing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;family=Source+Serif+4:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#000767",
+                    "on-error": "#690005",
+                    "syntax-keyword": "#bdc2ff",
+                    "surface-tint": "#bdc2ff",
+                    "tertiary-fixed": "#ffdea4",
+                    "inverse-primary": "#4953bc",
+                    "inverse-on-surface": "#2f3037",
+                    "on-surface": "#e3e1ea",
+                    "outline": "#908f9e",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#412d00",
+                    "surface-bright": "#383940",
+                    "surface": "#121319",
+                    "on-primary": "#131e8c",
+                    "background": "#121319",
+                    "primary-container": "#818cf8",
+                    "surface-variant": "#34343b",
+                    "error-container": "#93000a",
+                    "tertiary": "#f7bd3e",
+                    "secondary": "#bcc7df",
+                    "on-primary-fixed-variant": "#2f3aa3",
+                    "on-secondary-fixed": "#101c2e",
+                    "surface-container-lowest": "#0d0e14",
+                    "on-tertiary-fixed-variant": "#5d4200",
+                    "on-background": "#e3e1ea",
+                    "secondary-container": "#3c475b",
+                    "surface-dim": "#121319",
+                    "outline-variant": "#454653",
+                    "error": "#ffb4ab",
+                    "inverse-surface": "#e3e1ea",
+                    "syntax-type": "#f7bd3e",
+                    "tertiary-fixed-dim": "#f7bd3e",
+                    "syntax-string": "#aeb9d0",
+                    "surface-container-highest": "#34343b",
+                    "surface-container-high": "#292a30",
+                    "primary": "#bdc2ff",
+                    "on-secondary-fixed-variant": "#3c475b",
+                    "on-secondary-container": "#aab5cd",
+                    "syntax-comment": "#454653",
+                    "on-tertiary-fixed": "#261900",
+                    "outline-muted": "rgba(144, 143, 158, 0.1)",
+                    "secondary-fixed-dim": "#bcc7df",
+                    "on-surface-variant": "#c6c5d5",
+                    "primary-fixed-dim": "#bdc2ff",
+                    "secondary-fixed": "#d7e3fc",
+                    "surface-container": "#1e1f26",
+                    "on-tertiary-container": "#3e2b00",
+                    "surface-glass": "rgba(31, 31, 38, 0.8)",
+                    "primary-fixed": "#e0e0ff",
+                    "surface-container-low": "#1a1b21",
+                    "on-primary-container": "#101b8a",
+                    "tertiary-container": "#c08d00",
+                    "on-secondary": "#263144"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Source Serif 4"],
+                    "code-xs": ["JetBrains Mono"],
+                    "headline-xl": ["Inter"],
+                    "code-sm": ["JetBrains Mono"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #121319;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tech-grid {
+            background-image: 
+                linear-gradient(to right, rgba(144, 143, 158, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(144, 143, 158, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .glow-bar {
+            box-shadow: 0 0 15px 2px rgba(189, 194, 255, 0.4);
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            20% { width: 15%; }
+            45% { width: 45%; }
+            70% { width: 60%; }
+            90% { width: 95%; }
+            100% { width: 100%; }
+        }
+
+        .animate-progress {
+            animation: progress 4s ease-in-out infinite;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Background Layer -->
+<div class="fixed inset-0 tech-grid pointer-events-none"></div>
+<div class="fixed inset-0 bg-gradient-to-t from-surface-container-lowest/50 to-transparent pointer-events-none"></div>
+<!-- Main Splash Canvas -->
+<main class="relative h-screen w-full flex flex-col items-center justify-center p-6 overflow-hidden">
+<!-- Centered Branding Module -->
+<div class="flex flex-col items-center justify-center max-w-md w-full space-y-8">
+<!-- Animated Logo Container -->
+<div class="relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center">
+<div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl"></div>
+<!-- STITCH_SVG_START:ANIMATION_16 class="w-full h-full z-10" --><div class="w-full h-full z-10" id="animated-svg-ANIMATION_16" style="display:block;"><svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="g" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#818cf8;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#6366f1;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<!-- Outer Box -->
+<rect fill="none" height="60" rx="8" stroke="url(#g)" stroke-width="2" width="60" x="20" y="20">
+<animate attributename="stroke-dasharray" dur="2s" fill="freeze" from="0,240" to="240,0"></animate>
+</rect>
+<!-- Inner Node -->
+<circle cx="50" cy="50" fill="url(#g)" r="10">
+<animate attributename="r" dur="3s" repeatcount="indefinite" values="8;12;8"></animate>
+<animate attributename="opacity" dur="3s" repeatcount="indefinite" values="0.6;1;0.6"></animate>
+</circle>
+<!-- Connection Lines -->
+<line stroke="url(#g)" stroke-linecap="round" stroke-width="1.5" x1="35" x2="43" y1="35" y2="43">
+<animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0;1;0"></animate>
+</line>
+<line stroke="url(#g)" stroke-linecap="round" stroke-width="1.5" x1="65" x2="57" y1="65" y2="57">
+<animate attributename="opacity" begin="0.5s" dur="2s" repeatcount="indefinite" values="0;1;0"></animate>
+</line>
+</svg></div><!-- STITCH_SVG_END:ANIMATION_16 -->
+</div>
+<!-- Identity Block -->
+<div class="text-center space-y-3 fade-in-up" style="animation-delay: 300ms;">
+<h1 class="font-headline-xl text-headline-xl text-primary tracking-tighter">
+                    Khoji
+                </h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant/80 tracking-widest uppercase">
+                    Initializing Local Intelligence...
+                </p>
+</div>
+</div>
+<!-- System Status Footer -->
+<div class="absolute bottom-16 left-1/2 -translate-x-1/2 w-full max-w-xs md:max-w-md px-4 fade-in-up" style="animation-delay: 600ms;">
+<div class="space-y-4">
+<!-- Progress Metadata -->
+<div class="flex justify-between items-center w-full font-code-xs text-code-xs text-syntax-keyword/60">
+<span id="loading-step">Mounting Encrypted Volumes</span>
+<span id="loading-percent">45%</span>
+</div>
+<!-- Progress Bar Track -->
+<div class="h-[2px] w-full bg-outline-muted rounded-full overflow-hidden">
+<!-- Progress Bar Indicator -->
+<div class="h-full bg-primary glow-bar animate-progress transition-all duration-300"></div>
+</div>
+<!-- Technical Footer Tags -->
+<div class="flex justify-center items-center gap-6 pt-4 opacity-40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span class="font-code-xs text-code-xs">End-to-End Local</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">memory</span>
+<span class="font-code-xs text-code-xs">Neural Engine Ready</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interactions for status text
+        const statusLines = [
+            "Syncing Knowledge Graph",
+            "Allocating Local VRAM",
+            "Warming Neural Weights",
+            "Optimizing Search Index",
+            "Verifying Local Keys",
+            "Readying Document Parser"
+        ];
+        
+        let currentIndex = 0;
+        const statusElement = document.getElementById('loading-step');
+        const percentElement = document.getElementById('loading-percent');
+        
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % statusLines.length;
+            statusElement.style.opacity = 0;
+            
+            setTimeout(() => {
+                statusElement.textContent = statusLines[currentIndex];
+                statusElement.style.opacity = 1;
+                
+                // Randomize percent text loosely matching the bar's rhythm
+                const randomPct = Math.floor(Math.random() * 99) + 1;
+                percentElement.textContent = randomPct + '%';
+            }, 300);
+            
+        }, 2000);
+
+        // Transition logic for status element
+        statusElement.style.transition = 'opacity 0.3s ease';
+    </script>
+</body></html>

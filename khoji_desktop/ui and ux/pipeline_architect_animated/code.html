@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Khoji | Pipeline Architect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;family=Source+Serif+4:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            background: rgba(31, 31, 38, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .node-pulse {
+            animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+        .flow-line {
+            stroke-dasharray: 8;
+            animation: flow-dash 15s linear infinite;
+        }
+        @keyframes flow-dash {
+            to { stroke-dashoffset: -1000; }
+        }
+        .syntax-glow {
+            text-shadow: 0 0 8px rgba(189, 194, 255, 0.4);
+        }
+        
+        /* New Animations */
+        .node-active-glow {
+            animation: node-breathing 3s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(189, 194, 255, 0.1);
+        }
+        @keyframes node-breathing {
+            0%, 100% { border-color: rgba(189, 194, 255, 0.4); box-shadow: 0 0 15px rgba(189, 194, 255, 0.1); }
+            50% { border-color: rgba(189, 194, 255, 1); box-shadow: 0 0 30px rgba(189, 194, 255, 0.3); }
+        }
+
+        .shimmer-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer-btn::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 40%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 60%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .progress-fill {
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .console-flicker {
+            animation: terminal-flicker 0.15s infinite;
+        }
+        @keyframes terminal-flicker {
+            0% { opacity: 0.97; }
+            50% { opacity: 1; }
+            100% { opacity: 0.98; }
+        }
+
+        .line-reveal {
+            animation: line-reveal 0.3s ease-out forwards;
+            opacity: 0;
+            transform: translateY(4px);
+        }
+        @keyframes line-reveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#5d4200",
+                      "primary-fixed-dim": "#bdc2ff",
+                      "secondary": "#bcc7df",
+                      "surface-variant": "#34343b",
+                      "tertiary-fixed": "#ffdea4",
+                      "error-container": "#93000a",
+                      "surface-container-high": "#292a30",
+                      "secondary-fixed": "#d7e3fc",
+                      "secondary-container": "#3c475b",
+                      "surface-tint": "#bdc2ff",
+                      "outline": "#908f9e",
+                      "background": "#121319",
+                      "surface-bright": "#383940",
+                      "surface-dim": "#121319",
+                      "tertiary-container": "#c08d00",
+                      "syntax-keyword": "#bdc2ff",
+                      "outline-variant": "#454653",
+                      "on-secondary-container": "#aab5cd",
+                      "on-secondary-fixed": "#101c2e",
+                      "surface": "#121319",
+                      "on-surface-variant": "#c6c5d5",
+                      "surface-container-highest": "#34343b",
+                      "syntax-type": "#f7bd3e",
+                      "on-tertiary-container": "#3e2b00",
+                      "inverse-on-surface": "#2f3037",
+                      "on-primary-fixed-variant": "#2f3aa3",
+                      "on-error": "#690005",
+                      "inverse-surface": "#e3e1ea",
+                      "on-primary-container": "#101b8a",
+                      "tertiary": "#f7bd3e",
+                      "primary-fixed": "#e0e0ff",
+                      "surface-container-lowest": "#0d0e14",
+                      "on-primary-fixed": "#000767",
+                      "syntax-string": "#aeb9d0",
+                      "tertiary-fixed-dim": "#f7bd3e",
+                      "on-secondary": "#263144",
+                      "on-surface": "#e3e1ea",
+                      "secondary-fixed-dim": "#bcc7df",
+                      "on-tertiary": "#412d00",
+                      "outline-muted": "rgba(144, 143, 158, 0.1)",
+                      "primary-container": "#818cf8",
+                      "error": "#ffb4ab",
+                      "inverse-primary": "#4953bc",
+                      "syntax-comment": "#454653",
+                      "on-primary": "#131e8c",
+                      "surface-container": "#1e1f26",
+                      "surface-glass": "rgba(31, 31, 38, 0.8)",
+                      "on-background": "#e3e1ea",
+                      "on-secondary-fixed-variant": "#3c475b",
+                      "primary": "#bdc2ff",
+                      "on-tertiary-fixed": "#261900",
+                      "surface-container-low": "#1a1b21"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-page": "1.5rem",
+                      "gutter-grid": "1rem",
+                      "space-12": "48px",
+                      "space-6": "24px",
+                      "space-2": "8px",
+                      "space-1": "4px",
+                      "space-4": "16px",
+                      "space-8": "32px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "code-xs": ["JetBrains Mono"],
+                      "headline-xl": ["Inter"],
+                      "body-md": ["\"Source Serif 4\""],
+                      "code-sm": ["JetBrains Mono"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "label-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "code-xs": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                      "headline-xl": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "code-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "headline-lg": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "1.0", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- Activity Bar (SideNavBar Rail) -->
+<nav class="fixed left-0 top-0 h-full z-40 bg-surface-container-lowest border-r border-outline-variant w-16 flex flex-col items-center py-4 cursor-pointer duration-200 ease-in-out">
+<div class="mb-8 font-h2 text-h2 font-bold text-primary">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">account_tree</span>
+</div>
+<div class="flex flex-col gap-6 items-center flex-1">
+<div class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded-lg">
+<span class="material-symbols-outlined">folder</span>
+</div>
+<div class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded-lg">
+<span class="material-symbols-outlined">search</span>
+</div>
+<div class="p-2 text-primary bg-primary-container/20 rounded-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_tree</span>
+</div>
+<div class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded-lg">
+<span class="material-symbols-outlined">storage</span>
+</div>
+</div>
+<div class="mt-auto p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded-lg">
+<span class="material-symbols-outlined">settings</span>
+</div>
+</nav>
+<!-- Top Navigation -->
+<header class="flex justify-between items-center w-full px-4 h-12 ml-16 bg-surface-container-low border-b border-outline-variant fixed top-0 z-30">
+<div class="flex items-center gap-6">
+<h1 class="font-h3 text-h3 font-black text-primary">Khoji</h1>
+<nav class="hidden md:flex gap-4 font-label-md text-label-md">
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">File</a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">Edit</a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">View</a>
+<a class="text-primary border-b-2 border-primary pb-1" href="#">Go</a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">Help</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary px-3 py-1 rounded text-on-primary font-label-md flex items-center gap-2 hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-sm">sync</span>
+                Sync
+            </button>
+<div class="flex gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">history</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="flex-1 ml-16 mt-12 mb-6 flex overflow-hidden">
+<!-- Sidebar - Agent Directory -->
+<aside class="w-72 bg-surface-container-lowest border-r border-outline-variant flex flex-col">
+<div class="p-4 border-b border-outline-variant">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Pipeline</h2>
+<span class="material-symbols-outlined text-primary cursor-pointer">add_circle</span>
+</div>
+<button class="w-full bg-primary text-on-primary py-2 rounded-lg font-label-md flex items-center justify-center gap-2 hover:shadow-2xl transition-all shimmer-btn">
+<span class="material-symbols-outlined">play_arrow</span>
+                    Run All
+                </button>
+</div>
+<div class="flex-1 overflow-y-auto p-2 space-y-1">
+<!-- Group: Ingestion -->
+<div class="mb-2">
+<button class="w-full flex items-center justify-between p-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+<span class="font-label-md uppercase tracking-wider text-[10px]">Ingestion</span>
+</div>
+<span class="text-xs opacity-40">3/3</span>
+</button>
+<div class="pl-4 space-y-1">
+<div class="flex items-center justify-between p-2 rounded bg-secondary-container/20 border border-primary/20 node-active-glow">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-sm">input</span>
+<span class="font-label-md text-on-surface">PDF Ingest</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_#bdc2ff]"></div>
+</div>
+<div class="flex items-center justify-between p-2 rounded hover:bg-surface-container-high">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">link</span>
+<span class="font-label-md text-on-surface-variant">Web Crawler</span>
+</div>
+<input checked="" class="rounded border-outline bg-transparent text-primary focus:ring-primary w-3 h-3" type="checkbox"/>
+</div>
+</div>
+</div>
+<!-- Group: Extraction -->
+<div class="mb-2">
+<button class="w-full flex items-center justify-between p-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+<span class="font-label-md uppercase tracking-wider text-[10px]">Extraction</span>
+</div>
+<span class="text-xs opacity-40">2/2</span>
+</button>
+</div>
+<!-- Group: Synthesis -->
+<div class="mb-2">
+<button class="w-full flex items-center justify-between p-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+<span class="font-label-md uppercase tracking-wider text-[10px]">Synthesis</span>
+</div>
+<span class="text-xs opacity-40">1/1</span>
+</button>
+<div class="pl-4 space-y-1">
+<div class="flex items-center justify-between p-2 rounded bg-primary text-on-primary">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">hub</span>
+<span class="font-label-md">Synthesis Agent</span>
+</div>
+<span class="material-symbols-outlined text-xs">analytics</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Architect Canvas (Main Workspace) -->
+<section class="flex-1 relative bg-surface-dim overflow-hidden flex flex-col">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle at 1px 1px, #454653 1px, transparent 0); background-size: 32px 32px;"></div>
+<!-- Toolbar -->
+<div class="flex justify-between items-center p-4 glass-panel border-b border-outline-variant z-10">
+<div class="flex items-center gap-4">
+<div class="flex bg-surface-container-high rounded-lg p-1 border border-outline-variant/30">
+<button class="px-3 py-1 bg-secondary-container text-primary rounded shadow-sm font-label-md">Designer</button>
+<button class="px-3 py-1 text-on-surface-variant hover:text-on-surface font-label-md transition-colors">Flow View</button>
+</div>
+<div class="h-6 w-px bg-outline-variant"></div>
+<div class="flex gap-2">
+<button class="p-1.5 rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-sm">zoom_in</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-sm">zoom_out</span>
+</button>
+<span class="text-xs font-code-xs self-center text-on-surface-variant">100%</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-code-xs text-on-surface-variant">Pipeline Status: <span class="text-primary">Optimizing</span></span>
+<span class="material-symbols-outlined text-primary text-sm animate-pulse">bolt</span>
+</div>
+</div>
+<!-- Graph Canvas -->
+<div class="flex-1 relative overflow-auto p-12 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full pointer-events-none">
+<path class="flow-line stroke-primary/30 fill-none" d="M150,300 C250,300 250,200 350,200" stroke-width="2"></path>
+<path class="flow-line stroke-primary/30 fill-none" d="M150,300 C250,300 250,400 350,400" stroke-width="2"></path>
+<path class="flow-line stroke-primary/30 fill-none" d="M450,200 C550,200 550,300 650,300" stroke-width="2"></path>
+<path class="flow-line stroke-primary/30 fill-none" d="M450,400 C550,400 550,300 650,300" stroke-width="2"></path>
+<path class="flow-line stroke-primary/30 fill-none" d="M750,300 C850,300 850,300 950,300" stroke-width="2"></path>
+</svg>
+<div class="grid grid-cols-4 gap-x-48 gap-y-24 z-10 relative">
+<!-- Column 1: Ingestion -->
+<div class="flex flex-col gap-12">
+<div class="w-48 p-4 rounded-xl glass-panel border border-outline-variant shadow-xl hover:scale-105 transition-transform cursor-pointer node-active-glow">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-primary">input</span>
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(189,194,255,1)] animate-pulse"></div>
+</div>
+<h3 class="font-headline-md text-headline-md text-sm mb-1">Local Ingest</h3>
+<p class="text-[10px] text-on-surface-variant mb-4">Watching: /Users/khoji/vault</p>
+<div class="h-1 w-full bg-surface-container-high rounded overflow-hidden">
+<div class="h-full bg-primary progress-fill w-2/3" id="ingest-progress"></div>
+</div>
+</div>
+</div>
+<!-- Column 2: Extraction -->
+<div class="flex flex-col gap-12 -translate-y-20">
+<div class="w-48 p-4 rounded-xl glass-panel border border-outline-variant shadow-xl">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-secondary">image_search</span>
+<span class="text-[8px] font-code-xs bg-secondary-container px-1 text-on-secondary-container rounded">OCR</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-sm mb-1">Visual Extractor</h3>
+<p class="text-[10px] text-on-surface-variant">Tesseract v5.0.0-LTS</p>
+</div>
+<div class="w-48 p-4 rounded-xl glass-panel border border-outline-variant shadow-xl mt-32">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-secondary">translate</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-sm mb-1">LangDetect</h3>
+<p class="text-[10px] text-on-surface-variant">Multilingual Support</p>
+</div>
+</div>
+<!-- Column 3: Synthesis (Active) -->
+<div class="flex flex-col justify-center">
+<div class="w-56 p-5 rounded-2xl bg-surface-container-highest border-2 border-primary shadow-[0_0_30px_rgba(189,194,255,0.15)] scale-110 z-20 node-active-glow">
+<div class="flex justify-between items-start mb-3">
+<div class="p-2 bg-primary/20 rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+<span class="text-[10px] font-code-xs text-primary animate-pulse">ACTIVE</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-base mb-1 syntax-glow">Synthesis Agent</h3>
+<div class="flex gap-1 mb-4">
+<span class="text-[8px] bg-outline-variant/30 text-on-surface px-1.5 py-0.5 rounded">GPT-4o</span>
+<span class="text-[8px] bg-outline-variant/30 text-on-surface px-1.5 py-0.5 rounded">Claude 3.5</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center text-[10px] text-on-surface-variant">
+<span>RAM Usage</span>
+<span class="text-primary" id="ram-usage-text">32.4 GB</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-primary progress-fill w-[78%]" id="ram-progress"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 4: Export -->
+<div class="flex flex-col justify-center">
+<div class="w-48 p-4 rounded-xl glass-panel border border-outline-variant opacity-60">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-on-surface-variant">database</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-sm mb-1">Vector Index</h3>
+<p class="text-[10px] text-on-surface-variant">FAISS / HNSW</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar - Details (Synthesis Agent Focus) -->
+<aside class="w-80 bg-surface-container-lowest border-l border-outline-variant flex flex-col">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<h2 class="font-headline-md text-headline-md text-sm">Agent Inspector</h2>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-on-surface">close</span>
+</div>
+<div class="flex-1 overflow-y-auto">
+<!-- Metadata -->
+<div class="p-4 space-y-4">
+<div>
+<label class="font-label-md text-[10px] uppercase tracking-widest text-on-surface-variant">Agent Identity</label>
+<div class="mt-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">hub</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-sm">Synthesis Agent</h4>
+<p class="text-xs text-on-surface-variant italic">v2.4.1-stable</p>
+</div>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-high border border-outline-variant/50">
+<div class="flex justify-between mb-2">
+<span class="text-xs text-on-surface-variant">Models</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">edit</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-xs">
+<span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>GPT-4o</span>
+<span class="opacity-50">Primary</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>Claude 3.5 Sonnet</span>
+<span class="opacity-50">Fallback</span>
+</div>
+</div>
+</div>
+<div>
+<label class="font-label-md text-[10px] uppercase tracking-widest text-on-surface-variant">Resource Metrics</label>
+<div class="mt-2 grid grid-cols-2 gap-2">
+<div class="bg-surface-container p-2 rounded border border-outline-variant/30">
+<span class="text-[10px] text-on-surface-variant block">Memory</span>
+<span class="text-sm font-code-sm text-primary">32.4GB</span>
+</div>
+<div class="bg-surface-container p-2 rounded border border-outline-variant/30">
+<span class="text-[10px] text-on-surface-variant block">CPU Util.</span>
+<span class="text-sm font-code-sm text-secondary">42%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Live I/O Stream (Code/Terminal Style) -->
+<div class="mt-4 flex flex-col h-[300px]">
+<div class="px-4 py-2 bg-surface-container-high border-y border-outline-variant flex justify-between items-center">
+<span class="font-code-sm text-xs text-on-surface">Live Console</span>
+<div class="flex gap-1">
+<div class="w-2.5 h-2.5 rounded-full bg-error/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-tertiary/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-primary/40"></div>
+</div>
+</div>
+<div class="flex-1 bg-surface-container-lowest p-4 font-code-sm text-xs space-y-1 overflow-y-auto console-flicker" id="live-console">
+<p class="text-syntax-comment line-reveal">// Starting synthesis phase...</p>
+<p class="text-on-surface line-reveal"><span class="text-syntax-keyword">FETCH</span> workspace_context <span class="text-on-surface-variant">-&gt; success</span></p>
+<p class="text-on-surface line-reveal"><span class="text-syntax-keyword">RUN</span> cluster_analysis <span class="text-on-surface-variant">[98 docs]</span></p>
+<p class="text-on-surface line-reveal"><span class="text-syntax-type">WARN</span> High token density in node_42</p>
+<p class="text-on-surface line-reveal"><span class="text-syntax-keyword">STREAM</span> llm_response_chunk <span class="animate-pulse">_</span></p>
+<p class="text-on-surface-variant opacity-60 line-reveal">I/O rate: 1.2 MB/s</p>
+<p class="text-syntax-comment line-reveal">// Optimization complete.</p>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant bg-surface-container-low">
+<div class="flex gap-2">
+<button class="flex-1 py-2 bg-secondary-container text-on-secondary-container rounded font-label-md hover:bg-secondary-container/80 transition-colors">Configure</button>
+<button class="p-2 border border-error/50 text-error rounded hover:bg-error/10 transition-colors">
+<span class="material-symbols-outlined text-sm">stop</span>
+</button>
+</div>
+</div>
+</aside>
+</main>
+<!-- Status Bar (Footer) -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-between items-center px-3 bg-primary-container dark:bg-secondary-container h-6 font-code-xs text-code-xs text-on-primary-container cursor-default">
+<div class="flex items-center gap-4">
+<span class="font-bold">Index: 1,402 docs | 98% complete</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">check_circle</span>
+<span>v1.0.4-stable</span>
+</div>
+</div>
+<div class="flex items-center gap-4 opacity-80">
+<span>Line 42, Col 12</span>
+<span>UTF-8</span>
+<span class="font-bold underline">TypeScript</span>
+</div>
+</footer>
+<script>
+        // Micro-interaction for graph panning simulation
+        const canvas = document.querySelector('section');
+        let isPanning = false;
+        
+        canvas.addEventListener('mousedown', () => isPanning = true);
+        window.addEventListener('mouseup', () => isPanning = false);
+        
+        // Add activity to the log with reveal animation
+        const logContainer = document.getElementById('live-console');
+        const phrases = [
+            '<span class="text-syntax-keyword">PUSH</span> vector_store -> synced',
+            '<span class="text-syntax-type">INFO</span> Re-indexing 12 fragments',
+            '<span class="text-on-surface">SYNTHESIS</span> context window adjusted',
+            '<span class="text-syntax-comment"># Cooling down thermal limit</span>',
+            '<span class="text-syntax-keyword">VALIDATE</span> integrity_check <span class="text-on-surface-variant">PASS</span>'
+        ];
+
+        setInterval(() => {
+            const p = document.createElement('p');
+            p.className = 'text-on-surface line-reveal';
+            p.innerHTML = phrases[Math.floor(Math.random() * phrases.length)];
+            logContainer.appendChild(p);
+            if (logContainer.childNodes.length > 25) logContainer.removeChild(logContainer.firstChild);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }, 3000);
+
+        // Animate RAM and Progress bars randomly
+        const ramProgress = document.getElementById('ram-progress');
+        const ramText = document.getElementById('ram-usage-text');
+        const ingestProgress = document.getElementById('ingest-progress');
+
+        setInterval(() => {
+            const ramVal = (Math.random() * 20 + 60).toFixed(1);
+            ramProgress.style.width = `${ramVal}%`;
+            ramText.textContent = `${(ramVal * 0.4).toFixed(1)} GB`;
+
+            const ingestVal = (Math.random() * 40 + 30).toFixed(0);
+            ingestProgress.style.width = `${ingestVal}%`;
+        }, 4000);
+    </script>
+</body></html>

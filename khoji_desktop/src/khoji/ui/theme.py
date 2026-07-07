@@ -121,12 +121,14 @@ def build_stylesheet(theme_name: str) -> str:
     QWidget#sidebar QPushButton:hover {{
         background-color: {c['bg_tertiary']};
         color: {c['text_primary']};
+        border-left: 2px solid {c['accent']};
     }}
 
     QWidget#sidebar QPushButton:checked {{
         background-color: {c['accent']}30;
         color: {c['accent']};
         font-weight: 600;
+        border-left: 2px solid {c['accent']};
     }}
 
     QWidget#sidebar QLabel#sidebarTitle {{
@@ -152,7 +154,13 @@ def build_stylesheet(theme_name: str) -> str:
     }}
 
     QFrame#card:hover {{
-        border-color: {c['border_hover']};
+        border-color: {c['accent']};
+        background-color: {c['bg_hover']};
+    }}
+
+    QFrame#card:pressed {{
+        background-color: {c['bg_tertiary']};
+        padding: 18px 14px 14px 18px;
     }}
 
     /* ── Buttons ────────────────────────────────────────── */
@@ -168,6 +176,10 @@ def build_stylesheet(theme_name: str) -> str:
 
     QPushButton#primaryButton:hover {{
         background-color: {c['accent_hover']};
+    }}
+
+    QPushButton#primaryButton:pressed {{
+        padding: 12px 18px 8px 22px;
     }}
 
     QPushButton#primaryButton:disabled {{

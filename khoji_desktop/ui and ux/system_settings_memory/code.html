@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Khoji - Memory &amp; Preferences</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;family=Source+Serif+4:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            background: rgba(31, 31, 38, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .code-gutter {
+            border-right: 1px solid rgba(144, 143, 158, 0.2);
+            counter-reset: line;
+        }
+        .code-line::before {
+            counter-increment: line;
+            content: counter(line);
+            display: inline-block;
+            width: 2rem;
+            margin-right: 1rem;
+            text-align: right;
+            color: #454653;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #121319;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #454653;
+            border-radius: 10px;
+        }
+        .glow-accent {
+            box-shadow: 0 0 20px rgba(189, 194, 255, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-error-container": "#ffdad6",
+                "on-tertiary-fixed-variant": "#5d4200",
+                "primary-fixed-dim": "#bdc2ff",
+                "secondary": "#bcc7df",
+                "surface-variant": "#34343b",
+                "tertiary-fixed": "#ffdea4",
+                "error-container": "#93000a",
+                "surface-container-high": "#292a30",
+                "secondary-fixed": "#d7e3fc",
+                "secondary-container": "#3c475b",
+                "surface-tint": "#bdc2ff",
+                "outline": "#908f9e",
+                "background": "#121319",
+                "surface-bright": "#383940",
+                "surface-dim": "#121319",
+                "tertiary-container": "#c08d00",
+                "syntax-keyword": "#bdc2ff",
+                "outline-variant": "#454653",
+                "on-secondary-container": "#aab5cd",
+                "on-secondary-fixed": "#101c2e",
+                "surface": "#121319",
+                "on-surface-variant": "#c6c5d5",
+                "surface-container-highest": "#34343b",
+                "syntax-type": "#f7bd3e",
+                "on-tertiary-container": "#3e2b00",
+                "inverse-on-surface": "#2f3037",
+                "on-primary-fixed-variant": "#2f3aa3",
+                "on-error": "#690005",
+                "inverse-surface": "#e3e1ea",
+                "on-primary-container": "#101b8a",
+                "tertiary": "#f7bd3e",
+                "primary-fixed": "#e0e0ff",
+                "surface-container-lowest": "#0d0e14",
+                "on-primary-fixed": "#000767",
+                "syntax-string": "#aeb9d0",
+                "tertiary-fixed-dim": "#f7bd3e",
+                "on-secondary": "#263144",
+                "on-surface": "#e3e1ea",
+                "secondary-fixed-dim": "#bcc7df",
+                "on-tertiary": "#412d00",
+                "outline-muted": "rgba(144, 143, 158, 0.1)",
+                "primary-container": "#818cf8",
+                "error": "#ffb4ab",
+                "inverse-primary": "#4953bc",
+                "syntax-comment": "#454653",
+                "on-primary": "#131e8c",
+                "surface-container": "#1e1f26",
+                "surface-glass": "rgba(31, 31, 38, 0.8)",
+                "on-background": "#e3e1ea",
+                "on-secondary-fixed-variant": "#3c475b",
+                "primary": "#bdc2ff",
+                "on-tertiary-fixed": "#261900",
+                "surface-container-low": "#1a1b21"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "margin-page": "1.5rem",
+                "gutter-grid": "1rem",
+                "space-12": "48px",
+                "space-6": "24px",
+                "space-2": "8px",
+                "space-1": "4px",
+                "space-4": "16px",
+                "space-8": "32px"
+              },
+              "fontFamily": {
+                "headline-md": ["Inter"],
+                "code-xs": ["JetBrains Mono"],
+                "headline-xl": ["Inter"],
+                "body-md": ["\"Source Serif 4\""],
+                "code-sm": ["JetBrains Mono"],
+                "headline-lg": ["Inter"],
+                "label-md": ["Inter"]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-surface-dim text-on-surface font-body-md selection:bg-primary/30">
+<!-- Top Navigation Bar -->
+<nav class="flex justify-between items-center w-full px-4 h-12 ml-16 fixed top-0 left-0 z-40 bg-surface-container-low border-b border-outline-variant">
+<div class="flex items-center gap-space-6">
+<span class="font-headline-lg font-black text-primary">Khoji</span>
+<div class="flex gap-space-4">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-150" href="#">File</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-150" href="#">Edit</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-150" href="#">View</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-150" href="#">Go</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-150" href="#">Help</a>
+</div>
+</div>
+<div class="flex items-center gap-space-4">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-3 py-1 rounded hover:brightness-110 transition-all duration-150">Sync</button>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-high p-1 rounded">history</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-high p-1 rounded">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-high p-1 rounded">account_circle</span>
+</div>
+</nav>
+<!-- Side Navigation Rail -->
+<aside class="fixed left-0 top-0 h-full w-16 flex flex-col items-center py-4 z-50 bg-surface-container-lowest border-r border-outline-variant">
+<div class="mb-8">
+<span class="font-headline-lg text-primary font-bold">K</span>
+</div>
+<div class="flex flex-col gap-6 flex-1">
+<div class="group relative flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">folder</span>
+</div>
+</div>
+<div class="group relative flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">search</span>
+</div>
+</div>
+<div class="group relative flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">account_tree</span>
+</div>
+</div>
+<div class="group relative flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">storage</span>
+</div>
+</div>
+<div class="group relative flex flex-col items-center gap-1 cursor-pointer">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg text-primary bg-primary-container/20 border border-primary/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+</div>
+<div class="absolute left-14 bg-surface-container text-on-surface px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Settings</div>
+</div>
+</div>
+<div class="mt-auto">
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of a high-tech obsidian eye with intricate glowing circuitry patterns in its iris. The lighting is low and atmospheric with subtle violet and blue highlights reflecting off the polished dark surface. The overall style is modern corporate noir, emphasizing technical precision and silent intelligence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAznTeKX4WdGWvg8K5K-NavCYiA6qzl9UA6b0i4P6Qbo2Mc1nQ4UsCKgOkQBkKLoX88BxXrlintn0QzqYnlTsnDRhxDSZucMmRu6yLCMSp9pXbwr7cL6oMrz1pwV084hKAMW1_takwCPZLDmkpiXuQEjow836hqu3OAGf4gS-0-vzmUxq0X2cGV4qLFDZcqy1Yl6ofW_g73ynWcZJe-F7lOLcMPE8g58zo6T1Zam0xVnUuZ9ElwMSMF6EX5qili0tqf1iVfDER2CPvF"/>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-16 pt-12 pb-6 min-h-screen">
+<div class="max-w-[1440px] mx-auto p-space-6 flex gap-space-6 h-[calc(100vh-72px)]">
+<!-- Left Navigation Sidebar -->
+<section class="w-64 flex flex-col gap-space-4">
+<div class="flex flex-col gap-2">
+<h1 class="font-headline-lg text-on-surface mb-2 px-2">Settings</h1>
+<nav class="flex flex-col">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+<span class="font-label-md text-label-md">General</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+<span class="font-label-md text-label-md">Models</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-secondary-container text-primary border border-primary/10 transition-all shadow-lg" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">memory</span>
+<span class="font-label-md text-label-md font-bold">Memory</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">security</span>
+<span class="font-label-md text-label-md">Security</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">extension</span>
+<span class="font-label-md text-label-md">Plugins</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto bg-surface-container border border-outline-variant/30 rounded-xl p-4 glow-accent">
+<div class="flex justify-between items-center mb-3">
+<span class="font-label-md text-label-md text-on-surface-variant">Context Window</span>
+<span class="font-code-xs text-code-xs text-primary">82% Full</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[82%] rounded-full shadow-[0_0_10px_rgba(189,194,255,0.5)]"></div>
+</div>
+<p class="mt-3 font-code-xs text-code-xs text-on-surface-variant/60 leading-relaxed">
+                        Indexing 14,202 nodes. Context optimization active.
+                    </p>
+</div>
+</section>
+<!-- Right Content Pane (Settings Grid) -->
+<section class="flex-1 grid grid-cols-12 gap-space-6 h-full overflow-hidden">
+<!-- Preferences & Controls -->
+<div class="col-span-5 flex flex-col gap-space-4 overflow-y-auto custom-scrollbar pr-2">
+<div class="bg-surface-container border border-outline-variant/30 rounded-xl p-space-6">
+<h2 class="font-headline-md text-on-surface mb-space-4">Retention &amp; Policy</h2>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Auto-link concepts</p>
+<p class="text-xs text-on-surface-variant mt-1">AI will automatically create semantic connections between disparate notes.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-surface-variant after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary peer-checked:after:bg-on-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Retention Policy</p>
+<p class="text-xs text-on-surface-variant mt-1">Duration for keeping short-term episodic memory buffers.</p>
+</div>
+<select class="bg-surface-container-high border-outline-variant text-on-surface rounded-lg text-xs focus:ring-primary focus:border-primary">
+<option>Indefinite</option>
+<option>30 Days</option>
+<option>90 Days</option>
+</select>
+</div>
+<hr class="border-outline-variant/30"/>
+<div>
+<p class="font-label-md text-label-md text-on-surface mb-3">Memory Scoping</p>
+<div class="grid grid-cols-2 gap-2">
+<button class="bg-surface-container-high text-on-surface px-3 py-2 rounded-lg border border-outline-variant hover:border-primary/50 transition-all text-xs flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">visibility_off</span>
+                                        Exclusions
+                                    </button>
+<button class="bg-surface-container-high text-on-surface px-3 py-2 rounded-lg border border-outline-variant hover:border-primary/50 transition-all text-xs flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">history</span>
+                                        Pruning Logs
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant/30 rounded-xl p-space-6">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<h2 class="font-headline-md text-on-surface">Graph Health</h2>
+</div>
+<div class="space-y-4">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-xs font-code-xs text-on-surface-variant">
+<span>Knowledge Density</span>
+<span class="text-syntax-type">High (0.84)</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-syntax-type w-[84%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-xs font-code-xs text-on-surface-variant">
+<span>Cross-linking Latency</span>
+<span class="text-primary">12ms</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[15%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Editor Pane -->
+<div class="col-span-7 h-full flex flex-col bg-surface-container-low border border-outline-variant/30 rounded-xl overflow-hidden shadow-2xl relative">
+<!-- Editor Header -->
+<div class="h-10 px-4 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-high/50">
+<div class="flex items-center gap-4">
+<div class="flex gap-1.5">
+<div class="w-3 h-3 rounded-full bg-error/40"></div>
+<div class="w-3 h-3 rounded-full bg-syntax-type/40"></div>
+<div class="w-3 h-3 rounded-full bg-primary/40"></div>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">description</span>
+                                memory_preference.json
+                            </span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-on-surface-variant/40 px-1.5 py-0.5 border border-outline-variant/30 rounded uppercase tracking-wider">JSON</span>
+</div>
+</div>
+<!-- Editor Body -->
+<div class="flex-1 overflow-auto custom-scrollbar bg-[#0d0e14] relative">
+<div class="flex font-code-sm text-code-sm p-4 leading-relaxed">
+<div class="code-gutter mr-4 select-none text-right">
+<div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div><div class="code-line"></div>
+</div>
+<div class="flex-1 whitespace-pre">
+<span class="text-syntax-comment">// Khoji Persistent AI Memory Configuration</span>
+{
+  <span class="text-syntax-keyword">"version"</span>: <span class="text-syntax-string">"1.0.4-stable"</span>,
+  <span class="text-syntax-keyword">"identity"</span>: {
+    <span class="text-syntax-keyword">"user_intent_tracking"</span>: <span class="text-syntax-keyword">true</span>,
+    <span class="text-syntax-keyword">"persona_drift_detection"</span>: <span class="text-syntax-keyword">true</span>
+  },
+  <span class="text-syntax-keyword">"memory_layers"</span>: [
+    {
+      <span class="text-syntax-keyword">"type"</span>: <span class="text-syntax-string">"semantic_graph"</span>,
+      <span class="text-syntax-keyword">"active"</span>: <span class="text-syntax-keyword">true</span>,
+      <span class="text-syntax-keyword">"nodes"</span>: <span class="text-syntax-type">14202</span>,
+      <span class="text-syntax-keyword">"auto_prune"</span>: <span class="text-syntax-keyword">false</span>
+    },
+    {
+      <span class="text-syntax-keyword">"type"</span>: <span class="text-syntax-string">"episodic_buffer"</span>,
+      <span class="text-syntax-keyword">"limit"</span>: <span class="text-syntax-string">"2GB"</span>,
+      <span class="text-syntax-keyword">"sync_mode"</span>: <span class="text-syntax-string">"eager"</span>
+    }
+  ],
+  <span class="text-syntax-keyword">"inference_hooks"</span>: {
+    <span class="text-syntax-keyword">"pre_prompt_injection"</span>: <span class="text-syntax-keyword">true</span>,
+    <span class="text-syntax-keyword">"context_stitching"</span>: <span class="text-syntax-string">"hybrid"</span>
+  }
+}</div>
+</div>
+</div>
+<!-- Editor Footer -->
+<div class="h-8 px-4 border-t border-outline-variant/30 flex items-center justify-between bg-surface-container text-[11px] font-code-xs text-on-surface-variant">
+<div class="flex items-center gap-4">
+<span>Ln 12, Col 24</span>
+<span>UTF-8</span>
+<span>Spaces: 2</span>
+</div>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span>Syntactically Correct</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Global Footer -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-between items-center px-3 bg-primary-container dark:bg-secondary-container h-6 font-code-xs text-code-xs text-on-primary-container pointer-events-auto">
+<div class="font-bold">Index: 1,402 docs | 98% complete</div>
+<div class="flex gap-4">
+<span class="hover:opacity-100 opacity-80 cursor-default transition-all">v1.0.4-stable</span>
+<span class="hover:opacity-100 opacity-80 cursor-default transition-all">Line 42, Col 12</span>
+<span class="hover:opacity-100 opacity-80 cursor-default transition-all">UTF-8</span>
+<span class="hover:opacity-100 opacity-80 cursor-default transition-all">TypeScript</span>
+</div>
+</footer>
+<!-- Atmosphere/Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Subtle cursor follow glow
+            const content = document.querySelector('main');
+            const glow = document.createElement('div');
+            glow.className = 'fixed w-64 h-64 bg-primary/5 rounded-full pointer-events-none blur-[100px] z-0 transition-opacity duration-500 opacity-0';
+            document.body.appendChild(glow);
+
+            content.addEventListener('mousemove', (e) => {
+                glow.style.opacity = '1';
+                glow.style.left = `${e.clientX - 128}px`;
+                glow.style.top = `${e.clientY - 128}px`;
+            });
+
+            content.addEventListener('mouseleave', () => {
+                glow.style.opacity = '0';
+            });
+
+            // Simulate typing effect in editor occasionally
+            const editorText = document.querySelector('.flex-1.whitespace-pre');
+            // Mock interaction for display
+            console.log('Khoji Settings Layer Initialized...');
+        });
+    </script>
+</body></html>

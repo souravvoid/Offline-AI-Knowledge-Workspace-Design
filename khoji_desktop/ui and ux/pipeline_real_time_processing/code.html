@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Khoji | Document Processing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Source+Serif+4:wght@400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Source+Serif+4:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(31, 31, 38, 0.8);
+            border: 1px solid rgba(144, 143, 158, 0.1);
+        }
+        .pipeline-gradient {
+            background: linear-gradient(180deg, #bdc2ff 0%, rgba(189, 194, 255, 0) 100%);
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+        @keyframes scan-line {
+            0% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(400%); opacity: 0; }
+        }
+        .scan-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #bdc2ff;
+            box-shadow: 0 0 15px #bdc2ff;
+            animation: scan-line 3s ease-in-out infinite;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #454653;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#000767",
+                        "on-error": "#690005",
+                        "syntax-keyword": "#bdc2ff",
+                        "surface-tint": "#bdc2ff",
+                        "tertiary-fixed": "#ffdea4",
+                        "inverse-primary": "#4953bc",
+                        "inverse-on-surface": "#2f3037",
+                        "on-surface": "#e3e1ea",
+                        "outline": "#908f9e",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary": "#412d00",
+                        "surface-bright": "#383940",
+                        "surface": "#121319",
+                        "on-primary": "#131e8c",
+                        "background": "#121319",
+                        "primary-container": "#818cf8",
+                        "surface-variant": "#34343b",
+                        "error-container": "#93000a",
+                        "tertiary": "#f7bd3e",
+                        "secondary": "#bcc7df",
+                        "on-primary-fixed-variant": "#2f3aa3",
+                        "on-secondary-fixed": "#101c2e",
+                        "surface-container-lowest": "#0d0e14",
+                        "on-tertiary-fixed-variant": "#5d4200",
+                        "on-background": "#e3e1ea",
+                        "secondary-container": "#3c475b",
+                        "surface-dim": "#121319",
+                        "outline-variant": "#454653",
+                        "error": "#ffb4ab",
+                        "inverse-surface": "#e3e1ea",
+                        "syntax-type": "#f7bd3e",
+                        "tertiary-fixed-dim": "#f7bd3e",
+                        "syntax-string": "#aeb9d0",
+                        "surface-container-highest": "#34343b",
+                        "surface-container-high": "#292a30",
+                        "primary": "#bdc2ff",
+                        "on-secondary-fixed-variant": "#3c475b",
+                        "on-secondary-container": "#aab5cd",
+                        "syntax-comment": "#454653",
+                        "on-tertiary-fixed": "#261900",
+                        "outline-muted": "rgba(144, 143, 158, 0.1)",
+                        "secondary-fixed-dim": "#bcc7df",
+                        "on-surface-variant": "#c6c5d5",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "secondary-fixed": "#d7e3fc",
+                        "surface-container": "#1e1f26",
+                        "on-tertiary-container": "#3e2b00",
+                        "surface-glass": "rgba(31, 31, 38, 0.8)",
+                        "primary-fixed": "#e0e0ff",
+                        "surface-container-low": "#1a1b21",
+                        "on-primary-container": "#101b8a",
+                        "tertiary-container": "#c08d00",
+                        "on-secondary": "#263144"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Source Serif 4"],
+                        "code-xs": ["JetBrains Mono"],
+                        "headline-xl": ["Inter"],
+                        "code-sm": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-label-md selection:bg-primary/30 selection:text-primary">
+<!-- Activity Bar (SideNavBar) -->
+<aside class="fixed left-0 top-0 bottom-0 z-50 h-screen w-16 flex flex-col items-center py-4 bg-surface-container-lowest border-r border-outline-variant/30">
+<div class="mb-8">
+<span class="font-headline-md text-headline-md font-bold text-primary">K</span>
+</div>
+<nav class="flex flex-col gap-6">
+<button class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 scale-95 active:scale-90" title="Explorer">
+<span class="material-symbols-outlined">folder_open</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 scale-95 active:scale-90" title="Search">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-primary border-l-2 border-primary pl-1 transition-colors duration-200 scale-95 active:scale-90" title="Graph">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">hub</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 scale-95 active:scale-90" title="Settings">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</nav>
+<div class="mt-auto flex flex-col items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional high-resolution avatar of a software engineer with a minimalist aesthetic, softly lit by blue terminal light in a dark, sophisticated workspace. The style is modern corporate noir, with sharp focus and deep charcoal tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbxjlTzZFNsAI6myFpu8g_AchmUuMbFG13CWT_etb0h5XAIhH5BXNClksZkqu9GtJ_yffSmGCrLmCuCuQq-fevbxBRJNfq1uGb-e6uBi6qmUKMsVBfDlxg7yKhX0Hi9NY3UXMc2jfJeALDx4CzihU6xBcergXunnPVbSfbhAmQbVYw3AY9hJM0bxl2DXb-SYVL9U08fSW13h23ezvaPAG2DrU33-BhiEBEX0kCHeDRjP3k72JxjXNH4RfZn5mDAoWtbSNPwNV5PHj0"/>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-16 z-40 h-14 flex justify-between items-center px-6 bg-surface-glass border-b border-outline-variant/30 backdrop-blur-xl shadow-sm">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Khoji</h1>
+<nav class="hidden md:flex gap-6 ml-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Documents</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-md" href="#">Workspace</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-md" href="#">Analysis</a>
+</nav>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">window</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-16 pt-20 pb-12 px-6 md:px-12 min-h-screen">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Pipeline Steps -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<div class="glass-panel p-6 rounded-xl relative overflow-hidden">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Process Pipeline</h2>
+<span class="text-syntax-type font-code-sm bg-tertiary-container/20 px-2 py-0.5 rounded">v3.4-stable</span>
+</div>
+<div class="relative flex flex-col gap-10">
+<!-- Connecting Line -->
+<div class="absolute left-4 top-4 bottom-4 w-0.5 bg-outline-variant/30">
+<div class="h-[45%] w-full bg-primary shadow-[0_0_10px_#bdc2ff]"></div>
+</div>
+<!-- Step 1: Import -->
+<div class="flex items-start gap-6 relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 shadow-[0_0_15px_rgba(189,194,255,0.4)]">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div>
+<h3 class="text-primary font-bold">Import</h3>
+<p class="text-on-surface-variant text-sm">Source: filesystem/cloud_store</p>
+</div>
+</div>
+<!-- Step 2: OCR -->
+<div class="flex items-start gap-6 relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 shadow-[0_0_15px_rgba(189,194,255,0.4)]">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div>
+<h3 class="text-primary font-bold">OCR</h3>
+<p class="text-on-surface-variant text-sm">Tesseract Neural Engine active</p>
+</div>
+</div>
+<!-- Step 3: Layout Analysis -->
+<div class="flex items-start gap-6 relative z-10">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-primary flex items-center justify-center text-primary shrink-0 animate-pulse">
+<span class="material-symbols-outlined text-[18px] animate-spin-slow">sync</span>
+</div>
+<div>
+<h3 class="text-on-surface font-bold">Layout Analysis</h3>
+<p class="text-syntax-keyword text-sm">In Progress (BBox detection...)</p>
+</div>
+</div>
+<!-- Step 4: Embedding -->
+<div class="flex items-start gap-6 relative z-10">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[18px]">memory</span>
+</div>
+<div>
+<h3 class="text-on-surface-variant font-medium">Embedding</h3>
+<p class="text-on-surface-variant/50 text-sm">Pending queue position: 1</p>
+</div>
+</div>
+<!-- Step 5: AI Synthesis -->
+<div class="flex items-start gap-6 relative z-10">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[18px]">psychology</span>
+</div>
+<div>
+<h3 class="text-on-surface-variant font-medium">AI Synthesis</h3>
+<p class="text-on-surface-variant/50 text-sm">Waiting for embeddings</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Visualizer & Console -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Center Progress Ring & Visualization -->
+<div class="glass-panel p-8 rounded-xl flex flex-col items-center justify-center min-h-[360px] relative overflow-hidden">
+
+<div class="relative w-64 h-64 flex items-center justify-center">
+<!-- Progress Ring Background -->
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="50%" cy="50%" fill="transparent" r="100" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary drop-shadow-[0_0_8px_#bdc2ff]" cx="50%" cy="50%" fill="transparent" r="100" stroke="currentColor" stroke-dasharray="628" stroke-dashoffset="226" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-xl text-[48px] text-primary">64%</span>
+<span class="font-code-xs text-on-surface-variant tracking-widest uppercase">Analyzing Nodes</span>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-3 gap-8 w-full max-w-lg">
+<div class="text-center">
+<div class="text-syntax-keyword font-code-sm mb-1">1,402</div>
+<div class="text-on-surface-variant text-xs uppercase tracking-tighter">Total Items</div>
+</div>
+<div class="text-center">
+<div class="text-syntax-type font-code-sm mb-1">42.8 MB/s</div>
+<div class="text-on-surface-variant text-xs uppercase tracking-tighter">Throughput</div>
+</div>
+<div class="text-center">
+<div class="text-error font-code-sm mb-1">0.02%</div>
+<div class="text-on-surface-variant text-xs uppercase tracking-tighter">Error Rate</div>
+</div>
+</div>
+</div>
+<!-- Truthful Telemetry Console -->
+<div class="glass-panel rounded-xl overflow-hidden flex flex-col">
+<div class="bg-surface-container-high px-4 py-2 border-b border-outline-variant/30 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-error/40"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary/40"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-primary/40"></span>
+<span class="ml-2 font-code-xs text-on-surface-variant">Truthful Telemetry</span>
+</div>
+<div class="flex gap-4">
+<span class="font-code-xs text-syntax-comment">PID: 4821</span>
+<span class="font-code-xs text-syntax-keyword">UPTIME: 00:42:12</span>
+</div>
+</div>
+<div class="p-4 h-64 font-code-sm text-on-surface-variant overflow-y-auto custom-scrollbar bg-surface-container-lowest/50" id="console">
+<div class="flex gap-3 mb-1"><span class="text-syntax-comment">[14:02:01]</span> <span class="text-syntax-keyword">INFO:</span> Handshake established with local model shard.</div>
+<div class="flex gap-3 mb-1"><span class="text-syntax-comment">[14:02:04]</span> <span class="text-syntax-keyword">INFO:</span> Mounting volume /data/workspace_1...</div>
+<div class="flex gap-3 mb-1"><span class="text-syntax-comment">[14:02:05]</span> <span class="text-primary">EXEC:</span> Extracting 42 pages from source PDF...</div>
+<div class="flex gap-3 mb-1"><span class="text-syntax-comment">[14:02:12]</span> <span class="text-syntax-keyword">INFO:</span> OCR layers flattened successfully (Confidence: 0.98).</div>
+<div class="flex gap-3 mb-1"><span class="text-syntax-comment">[14:02:15]</span> <span class="text-syntax-type">WARN:</span> Unexpected text wrapping detected on Page 12. Adjusting heuristic.</div>
+<div class="flex gap-3 mb-1"><span class="text-syntax-comment">[14:02:18]</span> <span class="text-primary">EXEC:</span> Running YOLOv8-structure model on image segments...</div>
+<div class="flex gap-3 mb-1"><span class="text-syntax-comment">[14:02:22]</span> <span class="text-primary">EXEC:</span> Calculating vector embeddings via Llama-3-Embed...</div>
+<div class="flex gap-3 mb-1"><span class="text-syntax-comment">[14:02:24]</span> <span class="text-on-surface animate-pulse">&gt; Initializing synthesis core...</span></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer / Status Bar -->
+<footer class="fixed bottom-0 right-0 left-16 h-6 flex items-center px-4 justify-between bg-surface-container-high border-t border-outline-variant/30 text-code-xs font-code-xs text-on-surface-variant z-40">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>Indexing 1,402 docs</span>
+</div>
+<div class="border-l border-outline-variant/30 pl-4">
+<span>RAM: 4.2GB / 16GB</span>
+</div>
+<div class="border-l border-outline-variant/30 pl-4">
+<span>Model: Llama 3 (8B)</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-syntax-keyword uppercase">UTF-8</span>
+<span class="text-syntax-keyword uppercase">Python 3.11</span>
+<span class="material-symbols-outlined text-[14px]">notifications_active</span>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Console scrolling logic
+        const consoleEl = document.getElementById('console');
+        const logs = [
+            { t: '[14:02:28]', type: 'INFO', msg: 'Buffering semantic context chunks...', color: 'text-syntax-keyword' },
+            { t: '[14:02:31]', type: 'EXEC', msg: 'Re-ranking retrieved fragments...', color: 'text-primary' },
+            { t: '[14:02:35]', type: 'INFO', msg: 'Mapping relationship graph nodes...', color: 'text-syntax-keyword' },
+            { t: '[14:02:39]', type: 'EXEC', msg: 'Validating truthfulness constraints...', color: 'text-primary' }
+        ];
+        let logIndex = 0;
+
+        function addLog() {
+            if (logIndex < logs.length) {
+                const log = logs[logIndex];
+                const div = document.createElement('div');
+                div.className = 'flex gap-3 mb-1 opacity-0 transition-opacity duration-500';
+                div.innerHTML = `<span class="text-syntax-comment">${log.t}</span> <span class="${log.color}">${log.type}:</span> ${log.msg}`;
+                consoleEl.appendChild(div);
+                
+                // Trigger reflow for animation
+                setTimeout(() => div.classList.remove('opacity-0'), 10);
+                
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+                logIndex++;
+                setTimeout(addLog, Math.random() * 3000 + 2000);
+            }
+        }
+
+        setTimeout(addLog, 2000);
+    </script>
+</body></html>
